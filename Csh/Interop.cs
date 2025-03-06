@@ -1,4 +1,4 @@
-///// Warning - this file is created by gen_interop.lua - do not edit. 2025-03-05 09:24:03 /////
+///// Warning - this file is created by gen_interop.lua - do not edit. 2025-03-06 17:26:01 /////
 
 using System;
 using System.IO;

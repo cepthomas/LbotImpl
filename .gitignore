@@ -49,6 +49,7 @@ bin/
 *.vcxproj.user
 .x64/
 /test_ch/x64
-_log.txt
-_test.txt
+log.txt
 Debug/
+iobj/
+ibin/

@@ -11,11 +11,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <!-- <ClInclude Include="..\LBOT\luaex.h" /> -->
+    <ClInclude Include="..\LBOT\luaex.h" />
     <ClInclude Include="luainterop.h" />
   </ItemGroup>
   <ItemGroup>
-    <!-- <ClCompile Include="..\LBOT\luaex.c" /> -->
+    <ClCompile Include="..\LBOT\luaex.c" />
     <ClCompile Include="luainterop.c" />
     <ClCompile Include="Host.cpp" />
   </ItemGroup>

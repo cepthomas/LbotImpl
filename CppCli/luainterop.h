@@ -1,5 +1,5 @@
 #pragma once
-///// Warning - this file is created by gen_interop.lua - do not edit. 2025-03-04 13:01:56 /////
+///// Warning - this file is created by gen_interop.lua - do not edit. 2025-03-06 17:23:01 /////
 
 #include <stdbool.h>
 
@@ -18,7 +18,7 @@ extern "C" {
 // Initialize.
 // @param[in] l Internal lua state.
 // @param[in] opt Option
-// @return int Unused
+// @return int Return integer
 int luainterop_Setup(lua_State* l, int opt);
 
 // Host executes arbitrary lua function.
