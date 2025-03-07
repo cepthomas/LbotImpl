@@ -47,8 +47,6 @@ namespace Host
             LogManager.Run(Path.Combine(thisDir, "log.txt"), 50000);
             LogManager.LogMessage += (object? sender, LogMessageEventArgs e) => Console.WriteLine(e.ShortMessage);
 
-            // TODOF Support reload. Unload current modules so reload will be minty fresh. This may fail safely
-
             try
             {
                 // Hook script callbacks.
