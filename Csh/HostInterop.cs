@@ -8,13 +8,12 @@ using KeraLuaEx;
 
 namespace Interop
 {
-
+    /// <summary>Event payload.</summary>
     public class LogEventArgs : EventArgs
     {
         public int Level { get; set; } = 0;
         public string Msg { get; set; } = "???";
     };
-
 
     /// <summary></summary>
     public partial class Interop
