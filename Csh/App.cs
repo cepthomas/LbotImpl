@@ -12,18 +12,18 @@ using KeraLuaEx;
 
 
 // Entry.
-var app = new Host.Host();
+var app = new App.App();
 app.Dispose();
 
 
-namespace Host
+namespace App
 {
     /// <summary>A typical application.</summary>
-    public class Host : IDisposable
+    public class App : IDisposable
     {
         #region Fields
-        /// <summary>Host logger.</summary>
-        readonly Logger _logger = LogManager.CreateLogger("Host");
+        /// <summary>App logger.</summary>
+        readonly Logger _logger = LogManager.CreateLogger("App");
 
         /// <summary>For interop.</summary>
         Lua _l = new();
@@ -33,7 +33,7 @@ namespace Host
         /// <summary>
         /// Constructor.
         /// </summary>
-        public Host()
+        public App()
         {
             // Where are we?
             var thisDir = MiscUtils.GetSourcePath();

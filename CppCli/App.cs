@@ -11,31 +11,31 @@ using Interop;
 
 
 // Entry.
-var app = new Host.Host();
+var app = new App.App();
 app.Dispose();
 
 
-namespace Host
+namespace App
 {
     /// <summary>A typical application.</summary>
-    public class Host : IDisposable
+    public class App : IDisposable
     {
         #region Fields
-        /// <summary>Host logger.</summary>
+        /// <summary>App logger.</summary>
         readonly Logger _logger = LogManager.CreateLogger("HST");
 
         /// <summary>Script logger.</summary>
         readonly Logger _loggerScript = LogManager.CreateLogger("SCR");
 
         /// <summary>The interop.</summary>
-        protected HostInterop _interop = new();
+        protected AppInterop _interop = new();
         #endregion
 
         #region Lifecycle
         /// <summary>
         /// Constructor.
         /// </summary>
-        public Host()
+        public App()
         {
             // Where are we?
             var thisDir = MiscUtils.GetSourcePath();
@@ -50,8 +50,8 @@ namespace Host
             try
             {
                 // Hook script callbacks.
-                HostInterop.Log += Interop_Log;
-                HostInterop.Notification += Interop_Notification;
+                AppInterop.Log += Interop_Log;
+                AppInterop.Notification += Interop_Notification;
 
                 // Load script using specific lua script paths.
                 var scriptFn = Path.Combine(thisDir, "script_test.lua");

@@ -9,6 +9,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ibin\**" />
+    <Compile Remove="iobj\**" />
+    <EmbeddedResource Remove="ibin\**" />
+    <EmbeddedResource Remove="iobj\**" />
+    <None Remove="ibin\**" />
+    <None Remove="iobj\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="Interop.vcxproj" />
   </ItemGroup>
 

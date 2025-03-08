@@ -1,7 +1,7 @@
 ///// Warning - this file is created by gen_interop.lua - do not edit. 2025-03-06 17:23:01 /////
 
 #pragma once
-#include "Core.h"
+#include "InteropCore.h"
 
 using namespace System;
 using namespace System::Collections::Generic;
