@@ -6,7 +6,7 @@ local M = {}
 M.config =
 {
     lua_lib_name = "luainterop",            -- for require
-    host_lib_name = "Interop",              -- host filenames
+    host_lib_name = "LuaInterop",          -- host filenames
     host_namespace = "Interop",             -- host namespace
     add_refs = { "System.Diagnostics", },   -- for using (optional)
 }
@@ -108,34 +108,18 @@ M.host_funcs =
         lua_func_name = "get_time",
         host_func_name = "GetTime",
         description = "What time is it",
-        ret =
-        {
-            type = "S",
-            description = "The time"
-        }
-    },
-
-    {
-        lua_func_name = "check_value",
-        host_func_name = "CheckValue",
-        description = "Val1 is greater than val2? with no args",
         args =
         {
             {
-                name = "val_one",
-                type = "N",
-                description = "Val 1"
-            },
-            {
-                name = "val_two",
-                type = "N",
-                description = "Val 2"
+                name = "tzone",
+                type = "I",
+                description = "Time zone"
             },
         },
         ret =
         {
-            type = "B",
-            description = "The answer"
+            type = "S",
+            description = "The time"
         }
     },
 }

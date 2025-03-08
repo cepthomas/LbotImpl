@@ -7,16 +7,16 @@ using System.Threading;
 using System.Diagnostics;
 using Ephemera.NBagOfTricks;
 using Ephemera.NBagOfTricks.Slog;
-using Interop;
 using KeraLuaEx;
+//using Interop;
 
 
 // Entry.
-var app = new App.App();
+var app = new AppXXX.App();
 app.Dispose();
 
 
-namespace App
+namespace AppXXX
 {
     /// <summary>A typical application.</summary>
     public class App : IDisposable
@@ -47,8 +47,8 @@ namespace App
 
             try
             {
-                Interop.Interop _interop = new(_l);
-                _interop.LogEvent += (object? sender, LogEventArgs e) => _logger.Log((LogLevel)e.Level, e.Msg);
+                Interop _interop = new(_l);
+//                _interop.LogEvent += (object? sender, LogEventArgs e) => _logger.Log((LogLevel)e.Level, e.Msg);
                 _l.SetLuaPath([thisDir, lbotDir]);
                 LuaStatus lstat = _l.LoadFile(Path.Combine(thisDir, "script_example.lua"));
 

@@ -24,9 +24,6 @@
       <None Remove="__\**" />
     </ItemGroup>
     <ItemGroup>
-      <Compile Remove="AppInterop.cs" />
-    </ItemGroup>
-    <ItemGroup>
       <Reference Include="Ephemera.NBagOfTricks">
         <HintPath>..\lib\Ephemera.NBagOfTricks.dll</HintPath>
       </Reference>
