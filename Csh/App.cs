@@ -19,7 +19,7 @@ app.Dispose();
 namespace AppXXX
 {
     /// <summary>A typical application.</summary>
-    public class App : IDisposable
+    public partial class App : IDisposable
     {
         #region Fields
         /// <summary>App logger.</summary>
@@ -47,7 +47,10 @@ namespace AppXXX
 
             try
             {
-                Interop _interop = new(_l);
+                // Load our lib stuff.
+                LoadInterop();
+
+//                Interop _interop = new(_l);
 //                _interop.LogEvent += (object? sender, LogEventArgs e) => _logger.Log((LogLevel)e.Level, e.Msg);
                 _l.SetLuaPath([thisDir, lbotDir]);
                 LuaStatus lstat = _l.LoadFile(Path.Combine(thisDir, "script_example.lua"));
@@ -63,13 +66,13 @@ namespace AppXXX
                 // Execute script functions.
                 List<int> lint = [34, 608, 999];
                 TableEx t1 = new(lint);
-                var res1 = _interop.MyLuaFunc("abcdef", 74747, t1);
+                var res1 = MyLuaFunc("abcdef", 74747, t1);
 
-                var res2 = _interop.MyLuaFunc2(true);
+                var res2 = MyLuaFunc2(true);
 
-                var res3 = _interop.NoArgsFunc();
+                var res3 = NoArgsFunc();
 
-                var res4 = _interop.OptionalFunc();
+                var res4 = OptionalFunc();
             }
             catch (SyntaxException ex)
             {

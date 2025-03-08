@@ -9,19 +9,20 @@ using System.Diagnostics;
 
 namespace AppXXX
 {
-    public partial class Interop
+    public partial class App //Interop
     {
         ///////////////////////// ADDED //////////////////////////////
 
-        /// <summary>Main execution lua state.</summary>
-        readonly Lua _l;
-        public Interop(Lua l)
-        {
-            _l = l;
+        ///// <summary>Main execution lua state.</summary>
+        //readonly Lua _l;
 
-            // Load our lib stuff.
-            LoadInterop();
-        }
+        //public Interop(Lua l)
+        //{
+        //    _l = l;
+
+        //    // Load our lib stuff.
+        //    LoadInterop();
+        //}
 
 
 
@@ -190,10 +191,10 @@ namespace AppXXX
 
         #region ============= Infrastructure =============
         // Bind functions to static instance.
-        static Interop? _instance;
-        // Bound functions.
-        static LuaFunction? _Log;
-        static LuaFunction? _GetTime;
+//        static Interop? _instance;
+//        // Bound functions.
+//        static LuaFunction? _Log;
+//        static LuaFunction? _GetTime;
         readonly List<LuaRegister> _libFuncs = new();
 
         int OpenInterop(IntPtr p)
@@ -205,11 +206,13 @@ namespace AppXXX
 
         void LoadInterop()
         {
-            _instance = this;
-            _Log = _instance!.Log;
-            _libFuncs.Add(new LuaRegister("log", _Log));
-            _GetTime = _instance!.GetTime;
-            _libFuncs.Add(new LuaRegister("get_time", _GetTime));
+ //           _instance = this;
+ //           _Log = _instance!.Log;
+ //           _libFuncs.Add(new LuaRegister("log", _Log));
+ //           _GetTime = _instance!.GetTime;
+ //           _libFuncs.Add(new LuaRegister("get_time", _GetTime));
+            _libFuncs.Add(new LuaRegister("log", Log));
+            _libFuncs.Add(new LuaRegister("get_time", GetTime));
 
             _libFuncs.Add(new LuaRegister(null, null));
             _l.RequireF("luainterop", OpenInterop, true);

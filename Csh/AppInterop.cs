@@ -19,7 +19,7 @@ namespace AppXXX
     //};
 
     /// <summary></summary>
-    public partial class Interop
+    public partial class App//Interop
     {
         ///// <summary>Main execution lua state.</summary>
         //readonly Lua _l;
@@ -57,7 +57,7 @@ namespace AppXXX
         /// Bound lua callback work function.
         /// </summary>
         /// <returns>answer</returns>
-        string GetTimeCb(int tzone)
+        string GetTimeCb(int? tzone)
         {
             return DateTime.Now.ToString();
         }

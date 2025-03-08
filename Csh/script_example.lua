@@ -7,6 +7,7 @@ thing1 = 123  --"aaaaaa"
 
 li.log(2, "Hello from luainterop")
 
+print("xxxxxx")
 
 ----------------- Functions called from C#. -----------------
 function my_lua_func(arg_one, arg_two, arg_three)
