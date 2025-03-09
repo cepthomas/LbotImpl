@@ -18,6 +18,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="AppInterop.cpp" />
+    <None Remove="AppInterop.h" />
+    <None Remove="gen_interop.cmd" />
+    <None Remove="interop_spec.lua" />
+    <None Remove="log.txt" />
+    <None Remove="luainterop.c" />
+    <None Remove="luainterop.h" />
+    <None Remove="script_test.lua" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="Interop.vcxproj" />
   </ItemGroup>
 

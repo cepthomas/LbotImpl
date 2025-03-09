@@ -85,10 +85,10 @@
       <CompileAs>CompileAsCpp</CompileAs>
       <CompileAsManaged>false</CompileAsManaged>
     </ClCompile>
-    <ClCompile Include="AppInterop.cpp" />
+    <ClCompile Include="Interop.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AppInterop.h" />
+    <ClInclude Include="Interop.h" />
     <ClInclude Include="..\LBOT\internal\InteropCore.h" />
     <ClInclude Include="luainterop.h" />
     <ClInclude Include="..\LBOT\internal\luaex.h" />

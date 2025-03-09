@@ -7,7 +7,7 @@ using System.Threading;
 using System.Diagnostics;
 using Ephemera.NBagOfTricks;
 using Ephemera.NBagOfTricks.Slog;
-using Interop;
+using InteropCore;
 
 
 // Entry.
@@ -28,7 +28,7 @@ namespace CppCli
         readonly Logger _loggerScript = LogManager.CreateLogger("SCR");
 
         /// <summary>The interop.</summary>
-        protected AppInterop _interop = new();
+        protected Interop _interop = new();
         #endregion
 
         #region Lifecycle
@@ -50,8 +50,8 @@ namespace CppCli
             try
             {
                 // Hook script callbacks.
-                AppInterop.Log += Interop_Log;
-                AppInterop.Notification += Interop_Notification;
+                Interop.Log += Interop_Log;
+                Interop.Notification += Interop_Notification;
 
                 // Load script using specific lua script paths.
                 var scriptFn = Path.Combine(thisDir, "script_test.lua");
@@ -100,7 +100,7 @@ namespace CppCli
         }
 
         /// <summary>
-        /// Log something from script.
+        /// Script wants me to know something. TODOF add a way to return data to script.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
