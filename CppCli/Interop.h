@@ -1,4 +1,4 @@
-///// Warning - this file is created by gen_interop.lua - do not edit. 2025-03-06 17:23:01 /////
+///// Warning - this file is created by gen_interop.lua - do not edit. 2025-03-09 11:56:28 /////
 
 #pragma once
 #include "InteropCore.h"
@@ -6,7 +6,7 @@
 using namespace System;
 using namespace System::Collections::Generic;
 
-namespace CppCli//Interop
+namespace CppCli
 {
 
 //============= C => C# callback payload .h =============//
@@ -45,7 +45,7 @@ public:
 
 
 //----------------------------------------------------//
-public ref class AppInterop : Interop::Core
+public ref class Interop : InteropCore::Core
 {
 
 //============= C# => C functions .h =============//
