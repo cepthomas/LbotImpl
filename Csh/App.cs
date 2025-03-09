@@ -8,7 +8,6 @@ using System.Diagnostics;
 using Ephemera.NBagOfTricks;
 using Ephemera.NBagOfTricks.Slog;
 using KeraLuaEx;
-//using Interop;
 
 
 // Entry.
@@ -24,9 +23,6 @@ namespace Csh
         #region Fields
         /// <summary>App logger.</summary>
         readonly Logger _logger = LogManager.CreateLogger("App");
-
-        // /// <summary>For interop.</summary>
-        // Lua _l = new(); // TODO1 hide this
         #endregion
 
         #region Lifecycle
@@ -50,21 +46,8 @@ namespace Csh
                 // Load our luainterop lib.
                 LoadInterop();
 
-// //                Interop _interop = new(_l);
-// //                _interop.LogEvent += (object? sender, LogEventArgs e) => _logger.Log((LogLevel)e.Level, e.Msg);
-//                 _l.SetLuaPath([thisDir, lbotDir]);
-//                 LuaStatus lstat = _l.LoadFile(Path.Combine(thisDir, "script_example.lua"));
-
-//                 // Run it.
-//                 _l.PCall(0, Lua.LUA_MULTRET, 0);
-//                 // Reset stack.
-//                 _l.SetTop(0);
-
-
                 var scriptFn = Path.Combine(thisDir, "script_example.lua");
                 LoadScript(scriptFn, [thisDir, lbotDir]);
-
-
 
                 // LuaType t = _l.GetGlobal("thing1");
                 // var i = _l.ToInteger(-1);
@@ -72,12 +55,10 @@ namespace Csh
                 // Execute script functions.
                 List<int> lint = [34, 608, 999];
                 TableEx t1 = new(lint);
+
                 var res1 = MyLuaFunc("abcdef", 74747, t1);
-
                 var res2 = MyLuaFunc2(true);
-
                 var res3 = NoArgsFunc();
-
                 var res4 = OptionalFunc();
             }
             catch (SyntaxException ex)
@@ -105,7 +86,6 @@ namespace Csh
         }
         #endregion
 
-
         #region Lua call Host functions
         /// <summary>
         /// Bound lua callback work function.
@@ -113,7 +93,7 @@ namespace Csh
         /// <returns></returns>
         int LogCb(int? level, string? msg)
         {
-//TODO1 these????            LogEvent?.Invoke(this, new LogEventArgs() { Level = (int)level!, Msg = msg });
+            _logger.Log((LogLevel)level!, msg ?? "NULL");
             return 0;
         }
         
@@ -126,8 +106,5 @@ namespace Csh
             return DateTime.Now.ToString();
         }
         #endregion
-
-
-        
     }
 }

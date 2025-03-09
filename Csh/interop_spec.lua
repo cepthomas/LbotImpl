@@ -4,17 +4,11 @@
 local M = {}
 
 M.config =
--- {
---     lua_lib_name = "luainterop",            -- for require
---     host_lib_name = "Interop",              -- host filenames
---     host_namespace = "Csh",                 -- host namespace
---     add_refs = { "System.Diagnostics", },   -- for using (optional)
--- }
 {
     lua_lib_name = "luainterop",            -- for require, also filename
-    file_name = "Interop",              -- host filename
-    namespace = "Csh",             -- host namespace
-    class_name = "App",             -- host classname
+    file_name = "Interop",                  -- host filename
+    namespace = "Csh",                      -- host namespace
+    class_name = "App",                     -- host classname
     add_refs = { "System.Diagnostics", },   -- for using (optional)
 }
 

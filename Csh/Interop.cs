@@ -41,7 +41,7 @@ namespace Csh
 
             // Get the results from the stack.
             TableEx? ret = _l.ToTableEx(-1);
-            if (ret is null) { throw new SyntaxException("", -1, "Return value is not a TableEx"); }
+            if (ret is null) { throw new SyntaxException("", -1, "MyLuaFunc return value is not a TableEx"); }
             _l.Pop(1);
             return ret;
         }
@@ -68,7 +68,7 @@ namespace Csh
 
             // Get the results from the stack.
             double? ret = _l.ToNumber(-1);
-            if (ret is null) { throw new SyntaxException("", -1, "Return value is not a double"); }
+            if (ret is null) { throw new SyntaxException("", -1, "MyLuaFunc2 return value is not a double"); }
             _l.Pop(1);
             return ret;
         }
@@ -92,7 +92,7 @@ namespace Csh
 
             // Get the results from the stack.
             double? ret = _l.ToNumber(-1);
-            if (ret is null) { throw new SyntaxException("", -1, "Return value is not a double"); }
+            if (ret is null) { throw new SyntaxException("", -1, "NoArgsFunc return value is not a double"); }
             _l.Pop(1);
             return ret;
         }
@@ -116,7 +116,7 @@ namespace Csh
 
             // Get the results from the stack.
             int? ret = _l.ToInteger(-1);
-            if (ret is null) { throw new SyntaxException("", -1, "Return value is not a int"); }
+            if (ret is null) { throw new SyntaxException("", -1, "OptionalFunc return value is not a int"); }
             _l.Pop(1);
             return ret;
         }
@@ -126,10 +126,10 @@ namespace Csh
         #region ============= KeraLuaEx => C# callback functions =============s
         
         /// <summary>Host export function: Script wants to log something.
-        /// Lua arg: "level">Log level
-        /// Lua arg: "msg">Log message
-        /// Lua return: int Unused>
-        /// </summary>  
+        /// Lua arg: "level" Log level
+        /// Lua arg: "msg" Log message
+        /// Lua return: int Unused
+        /// </summary>
         /// <param name="p">Internal lua state</param>
         /// <returns>Number of lua return values></returns>
         int Log(IntPtr p)
@@ -139,20 +139,20 @@ namespace Csh
             // Get arguments
             int? level = null;
             if (l.IsInteger(1)) { level = l.ToInteger(1); }
-            else { throw new SyntaxException("", -1, $"Invalid arg type for: level"); }
+            else { throw new SyntaxException("", -1, "Invalid arg type: log(level)"); }
             string? msg = null;
             if (l.IsString(2)) { msg = l.ToString(2); }
-            else { throw new SyntaxException("", -1, $"Invalid arg type for: msg"); }
+            else { throw new SyntaxException("", -1, "Invalid arg type: log(msg)"); }
 
-            // Do the work. One result.
+            // Do the work. Always one result.
             int ret = LogCb(level, msg);
             l.PushInteger(ret);
             return 1;
         }
 
         /// <summary>Host export function: What time is it
-        /// Lua arg: "tzone">Time zone
-        /// Lua return: string The time>
+        /// Lua arg: "tzone" Time zone
+        /// Lua return: string The time
         /// </summary>
         /// <param name="p">Internal lua state</param>
         /// <returns>Number of lua return values></returns>
@@ -163,9 +163,9 @@ namespace Csh
             // Get arguments
             int? tzone = null;
             if (l.IsInteger(1)) { tzone = l.ToInteger(1); }
-            else { throw new SyntaxException("", -1, $"Invalid arg type for: tzone"); }
+            else { throw new SyntaxException("", -1, "Invalid arg type: get_time(tzone)"); }
 
-            // Do the work. One result.
+            // Do the work. Always one result.
             string ret = GetTimeCb(tzone);
             l.PushString(ret);
             return 1;
@@ -174,14 +174,8 @@ namespace Csh
         #endregion
 
         #region ============= Infrastructure =============
-//        // Bind functions to static instance.
-//        static Interop? _instance;
-//        // Bound functions.
-//        static LuaFunction? _Log;
-//        static LuaFunction? _GetTime;
-        readonly List<LuaRegister> _libFuncs = new();
 
-        /// <summary>Main execution lua state.</summary>
+        readonly List<LuaRegister> _libFuncs = new();
         readonly Lua _l = new ();
 
         int OpenInterop(IntPtr p)
@@ -193,29 +187,21 @@ namespace Csh
 
         void LoadInterop()
         {
- //           _instance = this;
- //           _Log = _instance!.Log;
- //           _libFuncs.Add(new LuaRegister("log", _Log));
- //           _GetTime = _instance!.GetTime;
- //           _libFuncs.Add(new LuaRegister("get_time", _GetTime));
             _libFuncs.Add(new LuaRegister("log", Log));
             _libFuncs.Add(new LuaRegister("get_time", GetTime));
-
             _libFuncs.Add(new LuaRegister(null, null));
             _l.RequireF("luainterop", OpenInterop, true);
         }
-//add:
+
         void LoadScript(string scriptFn, List<string> lbotDirs)
         {
             _l.SetLuaPath(lbotDirs);
             LuaStatus lstat = _l.LoadFile(scriptFn);
             if (lstat >= LuaStatus.ErrRun) { throw new LuaException("", -1, lstat, "LoadScript() failed"); }
-
             // Run it.
             _l.PCall(0, Lua.LUA_MULTRET, 0);
             // Reset stack.
             _l.SetTop(0);
-
         }
         #endregion
     }
