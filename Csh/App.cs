@@ -31,9 +31,10 @@ namespace Csh
         /// </summary>
         public App()
         {
-            // Where are we?
+            // Where are we? New applications will have to supply their own paths.
             var thisDir = MiscUtils.GetSourcePath();
             var lbotDir = Path.Combine(thisDir, "..", "LBOT");
+            var scriptFn = Path.Combine(thisDir, "script_example.lua");
 
             // Setup logging.
             LogManager.MinLevelFile = LogLevel.Trace;
@@ -43,23 +44,26 @@ namespace Csh
 
             try
             {
-                // Load our luainterop lib.
+                // Load luainterop lib.
                 LoadInterop();
 
-                var scriptFn = Path.Combine(thisDir, "script_example.lua");
                 LoadScript(scriptFn, [thisDir, lbotDir]);
-
-                // LuaType t = _l.GetGlobal("thing1");
-                // var i = _l.ToInteger(-1);
 
                 // Execute script functions.
                 List<int> lint = [34, 608, 999];
                 TableEx t1 = new(lint);
 
                 var res1 = MyLuaFunc("abcdef", 74747, t1);
+                _logger.Info($"MyLuaFunc() returned {res1}");
+
                 var res2 = MyLuaFunc2(true);
+                _logger.Info($"MyLuaFunc2() returned {res2}");
+
                 var res3 = NoArgsFunc();
+                _logger.Info($"NoArgsFunc() returned {res3}");
+
                 var res4 = OptionalFunc();
+                _logger.Info($"OptionalFunc() returned {res4}");
             }
             catch (SyntaxException ex)
             {
@@ -86,14 +90,14 @@ namespace Csh
         }
         #endregion
 
-        #region Lua call Host functions
+        #region Lua callback functions
         /// <summary>
         /// Bound lua callback work function.
         /// </summary>
         /// <returns></returns>
         int LogCb(int? level, string? msg)
         {
-            _logger.Log((LogLevel)level!, msg ?? "NULL");
+            _logger.Log((LogLevel)level!, $"SCRIPT LOGS {msg ?? "null"}");
             return 0;
         }
         
@@ -103,7 +107,7 @@ namespace Csh
         /// <returns>answer</returns>
         string GetTimeCb(int? tzone)
         {
-            return DateTime.Now.ToString();
+            return $"{DateTime.Now} Zone:{tzone}";
         }
         #endregion
     }
