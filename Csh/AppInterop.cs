@@ -6,10 +6,10 @@ using System.Text;
 using KeraLuaEx;
 
 
-// Handmade glue file.
+// Handmade glue file. TODO1 delete
 
 
-namespace AppXXX
+namespace Csh
 {
     ///// <summary>Event payload.</summary>
     //public class LogEventArgs : EventArgs
@@ -42,25 +42,25 @@ namespace AppXXX
         //#endregion
 
 
-        #region Lua call Host functions
-        /// <summary>
-        /// Bound lua callback work function.
-        /// </summary>
-        /// <returns></returns>
-        int LogCb(int? level, string? msg)
-        {
-//TODO1 these????            LogEvent?.Invoke(this, new LogEventArgs() { Level = (int)level!, Msg = msg });
-            return 0;
-        }
+//         #region Lua call Host functions
+//         /// <summary>
+//         /// Bound lua callback work function.
+//         /// </summary>
+//         /// <returns></returns>
+//         int LogCb(int? level, string? msg)
+//         {
+// //TODO1 these????            LogEvent?.Invoke(this, new LogEventArgs() { Level = (int)level!, Msg = msg });
+//             return 0;
+//         }
         
-        /// <summary>
-        /// Bound lua callback work function.
-        /// </summary>
-        /// <returns>answer</returns>
-        string GetTimeCb(int? tzone)
-        {
-            return DateTime.Now.ToString();
-        }
-        #endregion
+//         /// <summary>
+//         /// Bound lua callback work function.
+//         /// </summary>
+//         /// <returns>answer</returns>
+//         string GetTimeCb(int? tzone)
+//         {
+//             return DateTime.Now.ToString();
+//         }
+//         #endregion
     }
 }

@@ -7,26 +7,10 @@ using System.Collections.Generic;
 using KeraLuaEx;
 using System.Diagnostics;
 
-namespace AppXXX
+namespace Csh
 {
-    public partial class App //Interop
+    public partial class App
     {
-        ///////////////////////// ADDED //////////////////////////////
-
-        ///// <summary>Main execution lua state.</summary>
-        //readonly Lua _l;
-
-        //public Interop(Lua l)
-        //{
-        //    _l = l;
-
-        //    // Load our lib stuff.
-        //    LoadInterop();
-        //}
-
-
-
-
         #region ============= C# => KeraLuaEx functions =============
 
         /// <summary>Lua export function: Tell me something good.</summary>
@@ -145,7 +129,7 @@ namespace AppXXX
         /// Lua arg: "level">Log level
         /// Lua arg: "msg">Log message
         /// Lua return: int Unused>
-        /// </summary>
+        /// </summary>  
         /// <param name="p">Internal lua state</param>
         /// <returns>Number of lua return values></returns>
         int Log(IntPtr p)
@@ -155,10 +139,10 @@ namespace AppXXX
             // Get arguments
             int? level = null;
             if (l.IsInteger(1)) { level = l.ToInteger(1); }
-            else { throw new SyntaxException("", -1, $"Invalid arg type for {level}"); }
+            else { throw new SyntaxException("", -1, $"Invalid arg type for: level"); }
             string? msg = null;
             if (l.IsString(2)) { msg = l.ToString(2); }
-            else { throw new SyntaxException("", -1, $"Invalid arg type for {msg}"); }
+            else { throw new SyntaxException("", -1, $"Invalid arg type for: msg"); }
 
             // Do the work. One result.
             int ret = LogCb(level, msg);
@@ -179,7 +163,7 @@ namespace AppXXX
             // Get arguments
             int? tzone = null;
             if (l.IsInteger(1)) { tzone = l.ToInteger(1); }
-            else { throw new SyntaxException("", -1, $"Invalid arg type for {tzone}"); }
+            else { throw new SyntaxException("", -1, $"Invalid arg type for: tzone"); }
 
             // Do the work. One result.
             string ret = GetTimeCb(tzone);
@@ -190,12 +174,15 @@ namespace AppXXX
         #endregion
 
         #region ============= Infrastructure =============
-        // Bind functions to static instance.
+//        // Bind functions to static instance.
 //        static Interop? _instance;
 //        // Bound functions.
 //        static LuaFunction? _Log;
 //        static LuaFunction? _GetTime;
         readonly List<LuaRegister> _libFuncs = new();
+
+        /// <summary>Main execution lua state.</summary>
+        readonly Lua _l = new ();
 
         int OpenInterop(IntPtr p)
         {
@@ -216,6 +203,19 @@ namespace AppXXX
 
             _libFuncs.Add(new LuaRegister(null, null));
             _l.RequireF("luainterop", OpenInterop, true);
+        }
+//add:
+        void LoadScript(string scriptFn, List<string> lbotDirs)
+        {
+            _l.SetLuaPath(lbotDirs);
+            LuaStatus lstat = _l.LoadFile(scriptFn);
+            if (lstat >= LuaStatus.ErrRun) { throw new LuaException("", -1, lstat, "LoadScript() failed"); }
+
+            // Run it.
+            _l.PCall(0, Lua.LUA_MULTRET, 0);
+            // Reset stack.
+            _l.SetTop(0);
+
         }
         #endregion
     }

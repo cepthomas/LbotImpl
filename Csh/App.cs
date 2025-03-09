@@ -12,11 +12,11 @@ using KeraLuaEx;
 
 
 // Entry.
-var app = new AppXXX.App();
+var app = new Csh.App();
 app.Dispose();
 
 
-namespace AppXXX
+namespace Csh
 {
     /// <summary>A typical application.</summary>
     public partial class App : IDisposable
@@ -25,8 +25,8 @@ namespace AppXXX
         /// <summary>App logger.</summary>
         readonly Logger _logger = LogManager.CreateLogger("App");
 
-        /// <summary>For interop.</summary>
-        Lua _l = new();
+        // /// <summary>For interop.</summary>
+        // Lua _l = new(); // TODO1 hide this
         #endregion
 
         #region Lifecycle
@@ -47,21 +47,27 @@ namespace AppXXX
 
             try
             {
-                // Load our lib stuff.
+                // Load our luainterop lib.
                 LoadInterop();
 
-//                Interop _interop = new(_l);
-//                _interop.LogEvent += (object? sender, LogEventArgs e) => _logger.Log((LogLevel)e.Level, e.Msg);
-                _l.SetLuaPath([thisDir, lbotDir]);
-                LuaStatus lstat = _l.LoadFile(Path.Combine(thisDir, "script_example.lua"));
+// //                Interop _interop = new(_l);
+// //                _interop.LogEvent += (object? sender, LogEventArgs e) => _logger.Log((LogLevel)e.Level, e.Msg);
+//                 _l.SetLuaPath([thisDir, lbotDir]);
+//                 LuaStatus lstat = _l.LoadFile(Path.Combine(thisDir, "script_example.lua"));
 
-                // Run it.
-                _l.PCall(0, Lua.LUA_MULTRET, 0);
-                // Reset stack.
-                _l.SetTop(0);
+//                 // Run it.
+//                 _l.PCall(0, Lua.LUA_MULTRET, 0);
+//                 // Reset stack.
+//                 _l.SetTop(0);
 
-                LuaType t = _l.GetGlobal("thing1");
-                var i = _l.ToInteger(-1);
+
+                var scriptFn = Path.Combine(thisDir, "script_example.lua");
+                LoadScript(scriptFn, [thisDir, lbotDir]);
+
+
+
+                // LuaType t = _l.GetGlobal("thing1");
+                // var i = _l.ToInteger(-1);
 
                 // Execute script functions.
                 List<int> lint = [34, 608, 999];
@@ -98,5 +104,30 @@ namespace AppXXX
            _l.Dispose();
         }
         #endregion
+
+
+        #region Lua call Host functions
+        /// <summary>
+        /// Bound lua callback work function.
+        /// </summary>
+        /// <returns></returns>
+        int LogCb(int? level, string? msg)
+        {
+//TODO1 these????            LogEvent?.Invoke(this, new LogEventArgs() { Level = (int)level!, Msg = msg });
+            return 0;
+        }
+        
+        /// <summary>
+        /// Bound lua callback work function.
+        /// </summary>
+        /// <returns>answer</returns>
+        string GetTimeCb(int? tzone)
+        {
+            return DateTime.Now.ToString();
+        }
+        #endregion
+
+
+        
     }
 }
