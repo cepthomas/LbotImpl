@@ -6,7 +6,7 @@
 using namespace System;
 using namespace System::Collections::Generic;
 
-namespace Interop
+namespace CppCli//Interop
 {
 
 //============= C => C# callback payload .h =============//
@@ -45,7 +45,7 @@ public:
 
 
 //----------------------------------------------------//
-public ref class HostInterop : Core
+public ref class AppInterop : Interop::Core
 {
 
 //============= C# => C functions .h =============//

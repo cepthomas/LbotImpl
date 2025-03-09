@@ -11,11 +11,11 @@ using Interop;
 
 
 // Entry.
-var app = new App.App();
+var app = new CppCli.App();
 app.Dispose();
 
 
-namespace App
+namespace CppCli
 {
     /// <summary>A typical application.</summary>
     public class App : IDisposable

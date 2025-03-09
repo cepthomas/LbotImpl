@@ -5,8 +5,8 @@ local M = {}
 M.config =
 {
     lua_lib_name = "luainterop",    -- for require
-    host_lib_name = "HostInterop",  -- host filenames
-    host_namespace = "Interop"      -- host namespace
+    class_name = "Interop",  -- host filenames
+    namespace = "CppCli"      -- host namespace
 }
 
 ------------------------ Host => Script ------------------------

@@ -6,12 +6,12 @@
 
 using namespace System;
 using namespace System::Collections::Generic;
-using namespace Interop;
+//xxxusing namespace Interop;
 
 //============= C# => C functions .cpp =============//
 
 //--------------------------------------------------------//
-int Interop::Setup(int opt)
+int AppInterop::Setup(int opt)  // >>> AppInterop
 {
     LOCK();
     int ret = luainterop_Setup(_l, opt);
@@ -20,7 +20,7 @@ int Interop::Setup(int opt)
 }
 
 //--------------------------------------------------------//
-String^ Interop::DoCommand(String^ cmd, String^ arg)
+String^ AppInterop::DoCommand(String^ cmd, String^ arg)
 {
     LOCK();
     String^ ret = gcnew String(luainterop_DoCommand(_l, ToCString(cmd), ToCString(arg)));
@@ -38,7 +38,7 @@ int luainteropcb_Log(lua_State* l, int level, const char* msg)
 {
     LOCK();
     LogArgs^ args = gcnew LogArgs(level, msg);
-    Interop::Notify(args);
+    AppInterop::Notify(args);
     return 0;
 }
 
@@ -49,7 +49,7 @@ int luainteropcb_Notification(lua_State* l, int num, const char* text)
 {
     LOCK();
     NotificationArgs^ args = gcnew NotificationArgs(num, text);
-    Interop::Notify(args);
+    AppInterop::Notify(args);
     return 0;
 }
 
@@ -57,7 +57,7 @@ int luainteropcb_Notification(lua_State* l, int num, const char* text)
 //============= Infrastructure .cpp =============//
 
 //--------------------------------------------------------//
-void Interop::Run(String^ scriptFn, List<String^>^ luaPath)
+void AppInterop::Run(String^ scriptFn, List<String^>^ luaPath)
 {
     InitLua(luaPath);
     // Load C host funcs into lua space.
