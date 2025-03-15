@@ -9,7 +9,7 @@ Contains several flavors of how to embed Lua scripting in host languages:
 - CppCli: Creates a .NET assembly for consumption by host.
 - Csh: Call directly using [KeraLuaEx](https://github.com/cepthomas/KeraLuaEx.git) which exposes the Lua C API as .NET native methods.
 
-Uses submodule [LuaBagOfTricks](https://github.com/cepthomas/LuaBagOfTricks.git).
+Uses submodule [LuaBagOfTricks](https://github.com/cepthomas/LuaBagOfTricks.git). TODO1 LBOT symlink.
 
 It's mostly a Windows project but parts would probably work elsewhere.
 
