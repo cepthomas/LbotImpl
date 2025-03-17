@@ -17,7 +17,7 @@ int Interop::Setup(int opt)
 {
     LOCK();
     int ret = luainterop_Setup(_l, opt);
-    _EvalLuaInteropStatus(luainterop_Error(), "Setup()");
+    EvalLuaInteropStatus(luainterop_Error(), "Setup()");
     return ret;
 }
 
@@ -26,7 +26,7 @@ String^ Interop::DoCommand(String^ cmd, String^ arg)
 {
     LOCK();
     String^ ret = gcnew String(luainterop_DoCommand(_l, ToCString(cmd), ToCString(arg)));
-    _EvalLuaInteropStatus(luainterop_Error(), "DoCommand()");
+    EvalLuaInteropStatus(luainterop_Error(), "DoCommand()");
     return ret;
 }
 
