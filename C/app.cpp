@@ -13,6 +13,7 @@ extern "C"
 #include "luainterop.h"
 }
 
+TODO1 make into c
 
 // The main Lua thread.
 static lua_State* _l;
