@@ -1,19 +1,12 @@
-#include <cstdio>
-#include <cstring>
-#include <fstream>
+#include <windows.h>
 #include <assert.h>
 
-extern "C"
-{
-#include <windows.h>
 #include "lua.h"
 #include "lualib.h"
 #include "lauxlib.h"
 #include "luaex.h"
 #include "luainterop.h"
-}
 
-TODO1 make into c
 
 // The main Lua thread.
 static lua_State* _l;

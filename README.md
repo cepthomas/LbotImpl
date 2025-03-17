@@ -6,6 +6,8 @@ Tests and examples for [LuaBagOfTricks](https://github.com/cepthomas/LuaBagOfTri
 Building and running interop requires access to LuaBagOfTricks in a folder named `LBOT` at the top level
 of the repo. You can add it is a submodule, plain copy, or symlink as preferred.
 
+`mklink /d some_path\NTerm\Script\LBOT other_path\LuaBagOfTricks'.
+
 The intended way to use this is to simply copy one of the flavors directly, modify the spec file, run the code generator,
 modify the host file(s), build the application in VS.
 
