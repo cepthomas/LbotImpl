@@ -37,6 +37,8 @@ C# flavor:
 - Interop.cs - generated C# <=> KeraLuaEx interop code
 
 
+TODO1 add debugger example
+
 ## test_lua
 
 Some unit tests for LBOT Lua components.
