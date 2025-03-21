@@ -17,7 +17,7 @@ app.Dispose();
 
 namespace CppCli
 {
-    /// <summary>A typical application.</summary>
+    /// <summary>A typical application using interop.</summary>
     public class App : IDisposable
     {
         #region Fields
@@ -38,13 +38,12 @@ namespace CppCli
         public App()
         {
             // Where are we?
-            var thisDir = MiscUtils.GetSourcePath();
-            var lbotDir = Path.Combine(thisDir, "..", "LBOT");
+            var srcDir = MiscUtils.GetSourcePath();
 
             // Setup logging.
             LogManager.MinLevelFile = LogLevel.Trace;
             LogManager.MinLevelNotif = LogLevel.Info;
-            LogManager.Run(Path.Combine(thisDir, "log.txt"), 50000);
+            LogManager.Run(Path.Combine(srcDir, "log.txt"), 50000);
             LogManager.LogMessage += (object? sender, LogMessageEventArgs e) => Console.WriteLine(e.ShortMessage);
 
             try
@@ -53,10 +52,10 @@ namespace CppCli
                 Interop.Log += Interop_Log;
                 Interop.Notification += Interop_Notification;
 
-                // Load script using specific lua script paths.
-                var scriptFn = Path.Combine(thisDir, "script_test.lua");
-                List<string> lpath = [thisDir, lbotDir];
-                _interop.Run(scriptFn, lpath);
+                // Load script.
+                var scriptFn = Path.Combine(srcDir, "script_test.lua");
+                var luaPath = $"{srcDir}\\..\\LBOT\\?.lua;{srcDir}\\lua\\?.lua;;";
+                _interop.Run(scriptFn, luaPath);
 
                 // Execute script functions.
                 int res = _interop.Setup(12345);
@@ -66,7 +65,7 @@ namespace CppCli
                     _logger.Info($"cmd {i} gave me {cmdResp}");
                 }
             }
-            catch (InteropException ex)
+            catch (LuaException ex)
             {
                 _loggerScript.Exception(ex);
             }
@@ -100,7 +99,7 @@ namespace CppCli
         }
 
         /// <summary>
-        /// Script wants me to know something. TODOF add a way to return data to script.
+        /// Script wants me to know something.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

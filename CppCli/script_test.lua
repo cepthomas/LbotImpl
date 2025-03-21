@@ -33,7 +33,7 @@ end
 function do_command(cmd, arg)
     local ret = 'OK'
     log_info('Got do_command: '..cmd..' '..arg)
-    if cmd == 'unload_all' then  -- TODOF Unload everything so that the script can be reloaded.
+    if cmd == 'unload_all' then  -- TODO1 Unload everything so that the script can be reloaded.
         package.loaded.lbot_utils = nil
         package.loaded.stringex = nil
     elseif cmd == 'other_cmd' then -- As needed

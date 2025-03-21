@@ -1,4 +1,4 @@
-///// Warning - this file is created by gen_interop.lua - do not edit. 2025-03-09 11:56:28 /////
+///// Warning - this file is created by gen_interop.lua - do not edit. /////
 
 #pragma once
 #include "InteropCore.h"
@@ -19,6 +19,8 @@ public:
     property int level;
     /// <summary>Log message</summary>
     property String^ msg;
+    /// <summary>Unused</summary>
+    property int ret;
     /// <summary>Constructor.</summary>
     LogArgs(int level, const char* msg)
     {
@@ -35,6 +37,8 @@ public:
     property int num;
     /// <summary>Some text</summary>
     property String^ text;
+    /// <summary>Unused</summary>
+    property int ret;
     /// <summary>Constructor.</summary>
     NotificationArgs(int num, const char* text)
     {
@@ -76,7 +80,7 @@ public:
     /// <summary>Initialize and execute.</summary>
     /// <param name="scriptFn">The script to load.</param>
     /// <param name="luaPath">LUA_PATH components</param>
-    void Run(String^ scriptFn, List<String^>^ luaPath);
+    void Run(String^ scriptFn, String^ luaPath);
 };
 
 }
