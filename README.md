@@ -26,18 +26,17 @@ C flavor:
 - luainterop.c/h - generated C <=> Lua interop code
 
 C++/CLI flavor (also requires the C flavor):
-- CppCli.sln, CppCli.csproj, Interop.vcxproj - VS solution
+- CppCli.sln, CppCli.csproj, Interop\Interop.vcxproj - VS solution
 - App.cs - main application and events
-- Interop.cpp/h - generated C# <=> C interop code
-- luainterop.c/h - generated C <=> Lua interop code
+- Interop\Interop.cpp/h - generated C# <=> C interop code
+- Interop\luainterop.c/h - generated C <=> Lua interop code
 
 C# flavor:
 - Csh.sln/csproj - VS solution
 - App.cs - main application and events
 - Interop.cs - generated C# <=> KeraLuaEx interop code
 
-
-TODO1 add debugger example
+The C++/CLI flavor also demonstrates how to use the debugger - see `script_test.lua`.
 
 ## test_lua
 
