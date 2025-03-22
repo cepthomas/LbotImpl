@@ -1,5 +1,12 @@
 
+-- Use the debugger. For color output set env var 'TERM' and provide a dbg() statement.
+-- Not that the project must be set to `<OutputType>Exe</OutputType>` even if using WinForms.
+local dbg = require("debugger")
+
 local li  = require("luainterop")
+
+local counter = 100
+
 
 -----------------------------------------------------------------------------
 --- Log functions. This goes straight through to the host.
@@ -28,19 +35,14 @@ end
 -----------------------------------------------------------------------------
 --- Global function for App interaction with script internals.
 -- @param cmd specific command string
--- @param arg optional argument string
+-- @param arg optional argument int
 -- @return result string (table would be nice later)
 function do_command(cmd, arg)
-    local ret = 'OK'
-    log_info('Got do_command: '..cmd..' '..arg)
-    if cmd == 'unload_all' then  -- TODO1 Unload everything so that the script can be reloaded.
-        package.loaded.lbot_utils = nil
-        package.loaded.stringex = nil
-    elseif cmd == 'other_cmd' then -- As needed
-        ret = "Later dude"
-    else
-        ret = 'Unknown cmd '..cmd..' '..arg
-    end
+    dbg()
+
+    log_info('Got this command: '..cmd..'('..arg..')')
+    local ret = 'counter='..counter
+    counter = counter + 1
 
     return ret
 end

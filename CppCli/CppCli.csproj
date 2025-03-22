@@ -29,16 +29,16 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Compile Remove="ibin\**" />
-      <Compile Remove="iobj\**" />
-      <EmbeddedResource Remove="ibin\**" />
-      <EmbeddedResource Remove="iobj\**" />
-      <None Remove="ibin\**" />
-      <None Remove="iobj\**" />
+      <Compile Remove="bini\**" />
+      <Compile Remove="obji\**" />
+      <EmbeddedResource Remove="bini\**" />
+      <EmbeddedResource Remove="obji\**" />
+      <None Remove="bini\**" />
+      <None Remove="obji\**" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="Interop.vcxproj" />
+        <ProjectReference Include="Interop\Interop.vcxproj" />
     </ItemGroup>
 
     <ItemGroup>

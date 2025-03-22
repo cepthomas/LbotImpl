@@ -61,7 +61,7 @@ namespace CppCli
                 int res = _interop.Setup(12345);
                 for (int i = 0; i < res; i++)
                 {
-                    var cmdResp = _interop.DoCommand("cmd", (i*2).ToString());
+                    var cmdResp = _interop.DoCommand("cmd", i * 2);
                     _logger.Info($"cmd {i} gave me {cmdResp}");
                 }
             }
