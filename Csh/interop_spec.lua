@@ -7,7 +7,7 @@ M.config =
 {
     lua_lib_name = "luainterop",            -- for require, also filename
     file_name = "Interop",                  -- host filename
-    namespace = "Csh",                      -- host namespace TODO1 trim these config values
+    namespace = "Csh",                      -- host namespace
     class_name = "App",                     -- host classname
     add_refs = { "System.Diagnostics", },   -- for using (optional)
 }
