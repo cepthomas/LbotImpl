@@ -15,7 +15,7 @@ using namespace CppCli;
 //--------------------------------------------------------//
 int Interop::Setup(int opt)
 {
-    LOCK();
+    SCOPE();
     int ret = luainterop_Setup(_l, opt);
     EvalLuaInteropStatus(luainterop_Error(), "Setup()");
     return ret; 
@@ -24,7 +24,7 @@ int Interop::Setup(int opt)
 //--------------------------------------------------------//
 String^ Interop::DoCommand(String^ cmd, int arg)
 {
-    LOCK();
+    SCOPE();
     String^ ret = gcnew String(luainterop_DoCommand(_l, ToCString(cmd), arg));
     EvalLuaInteropStatus(luainterop_Error(), "DoCommand()");
     return ret; 
@@ -38,7 +38,7 @@ String^ Interop::DoCommand(String^ cmd, int arg)
 
 int luainteropcb_Log(lua_State* l, int level, const char* msg)
 {
-    LOCK();
+    SCOPE();
     LogArgs^ args = gcnew LogArgs(level, msg);
     Interop::Notify(args);
     return args->ret;
@@ -49,7 +49,7 @@ int luainteropcb_Log(lua_State* l, int level, const char* msg)
 
 int luainteropcb_Notification(lua_State* l, int num, const char* text)
 {
-    LOCK();
+    SCOPE();
     NotificationArgs^ args = gcnew NotificationArgs(num, text);
     Interop::Notify(args);
     return args->ret;
