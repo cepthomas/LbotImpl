@@ -18,7 +18,6 @@ M.script_funcs =
     {
         lua_func_name = "my_lua_func",
         host_func_name = "MyLuaFunc",
-        required = "true",
         description = "Tell me something good.",
         args =
         {
@@ -47,7 +46,6 @@ M.script_funcs =
     {
         lua_func_name = "my_lua_func2",
         host_func_name = "MyLuaFunc2",
-        required = "true",
         description = "wooga wooga",
         args =
         {
@@ -67,7 +65,6 @@ M.script_funcs =
     {
         lua_func_name = "no_args_func",
         host_func_name = "NoArgsFunc",
-        required = "true",
         description = "no_args",
         ret =
         {
@@ -79,7 +76,6 @@ M.script_funcs =
     {
         lua_func_name = "optional_func",
         host_func_name = "OptionalFunc",
-        required = "false",
         description = "Function is optional.",
         ret =
         {

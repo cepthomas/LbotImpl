@@ -14,7 +14,6 @@ M.script_funcs =
     {
         lua_func_name = "setup",
         host_func_name = "Setup",
-        required = "true",
         description = "Initialize stuff.",
         args =
         {
@@ -26,7 +25,6 @@ M.script_funcs =
     {
         lua_func_name = "do_command",
         host_func_name = "DoCommand",
-        required = "true",
         description = "Arbitrary lua function.",
         args =
         {
