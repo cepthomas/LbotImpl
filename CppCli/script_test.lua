@@ -1,6 +1,6 @@
 
 -- Use the debugger. For color output set env var 'TERM' and provide a dbg() statement.
--- Not that the project must be set to `<OutputType>Exe</OutputType>` even if using WinForms.
+-- Note that the project must be set to `<OutputType>Exe</OutputType>` even if using WinForms.
 local dbg = require("debugger")
 
 local li  = require("luainterop")

@@ -29,15 +29,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Compile Remove="bini\**" />
-      <Compile Remove="obji\**" />
-      <EmbeddedResource Remove="bini\**" />
-      <EmbeddedResource Remove="obji\**" />
-      <None Remove="bini\**" />
-      <None Remove="obji\**" />
-    </ItemGroup>
-
-    <ItemGroup>
         <ProjectReference Include="Interop\Interop.vcxproj" />
     </ItemGroup>
 
