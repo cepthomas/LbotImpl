@@ -1,29 +1,135 @@
 
+require 'class'
+tx = require 'tableex'
 
--- (pseudo)objects
+
+--[[ (pseudo)objects
 -- ---------------------
 -- C:\Users\cepth\OneDrive\OneDriveDocuments\tech\lua\lua-oop.ntr -> # mixing closures with tables
 
--- So these are all equivalent:
--- obj:method(foo)
--- obj.method(obj, foo)
--- obj["method"] (obj, foo) 
+People get confused on this because of the obj:method syntax, but it's a clever lie. In Lua, obj:method isn't a 
+language feature; objects don't exist. It's just syntactic sugar over the tbl.key form of table access with an 
+implicit first argument, which itself is syntactic sugar over tbl["key"].
+
+So these are all equivalent:
+obj:method(foo)
+obj.method(obj, foo)
+obj["method"] (obj, foo) 
+
+And they all work because functions are first class, which means you can create "methods" by binding functions to table keys. 
+So, like the above, these are equivalent for creating methods to an "object":
+obj = {}
+function obj:method(foo) ... end
+function obj.method(self,foo) ... end
+obj["method"] = function (self, foo) ... end
+
+You can use metatables to do fancier things like build your own inheritance systems and control access to parts of it, 
+but ultimately the above is what you're dealing with in Lua when working with "objects": a table that has "fields" 
+(keys of data) and "methods" (keys of functions) that are fully public and can be manipulated freely. You can even 
+pretend you have classes by making a Foo:new() that constructs one of these table objects and returns it.
+
+    __index: The indexing access operation table[key]. This event happens when table is not a table or when key is not present in table. 
+    The metavalue is looked up in the metatable of table.
+    The metavalue for this event can be either a function, a table, or any value with an __index metavalue. 
+    If it is a function, it is called with table and key as arguments, and the result of the call (adjusted to one value) 
+    is the result of the operation. Otherwise, the final result is the result of indexing this metavalue with key. This indexing 
+    is regular, not raw, and therefore can trigger another __index metavalue.
+
+    __newindex: The indexing assignment table[key] = value. Like the index event, this event happens when table is not a table or when 
+    key is not present in table. The metavalue is looked up in the metatable of table.
+    Like with indexing, the metavalue for this event can be either a function, a table, or any value with an __newindex metavalue. 
+    If it is a function, it is called with table, key, and value as arguments. Otherwise, Lua repeats the indexing assignment over 
+    this metavalue with the same key and value. This assignment is regular, not raw, and therefore can trigger another __newindex metavalue.
+    Whenever a __newindex metavalue is invoked, Lua does not perform the primitive assignment. If needed, the metamethod itself can call 
+    rawset to do the assignment.
+
+    __call: The call operation func(args). This event happens when Lua tries to call a non-function value (that is, func is not a function). 
+    The metamethod is looked up in func. If present, the metamethod is called with func as its first argument, followed by the arguments 
+    of the original call (args). All results of the call are the results of the operation. This is the only metamethod that allows multiple results.
+
+My background (such as it is) has been in functional, rather than OOP coding, historically, so I guess I’m more
+comfortable running arrays through functions, rather than creating objects with their own encapsulated properties
+and methods (though I also understand some of the advantages of this approach).
+
+also -- >>>>>>>>>>>>>>>>>>>>> https://www.reddit.com/r/lua/comments/tia21g/comment/i1dok2a/
+
+]]
 
 
--- My background (such as it is) has been in functional, rather than OOP coding, historically, so I guess I’m more
--- comfortable running arrays through functions, rather than creating objects with their own encapsulated properties
--- and methods (though I also understand some of the advantages of this approach).
+------------------ mine ------------------------------------------
+
+
+
+-- l1 = list:new()
+-- l1:len()
+-- l1:insert(2, o)
+
+
+-- function MyList(t)
+--     local name = n
+--     local o = t -- this is our storage
+
+function MyList(n)
+    local name = n
+    local o = {} -- this is our storage
+    local num = 0
+
+    function o:setName(n)
+        name = n
+    end
+
+    function o:getName()
+        return name
+    end
+
+    function o:len()
+        return name
+    end
+
+    return o
+end
+
+o = MyList('fido')
+print('+++ fido '..o:getName())
+o:setName('bonzo')
+print('+++ bonzo '..o:getName())
+
+
+
+
+function MyObject(n)
+    local name = n -- this is our field
+    local obj = {}  -- this is our object
+
+    function obj:setName(n)
+        name = n
+    end
+
+    function obj:getName()
+        return name
+    end
+
+    return obj
+end
+
+o = MyObject('fido')
+print('+++ fido '..o:getName())
+o:setName('bonzo')
+print('+++ bonzo '..o:getName())
+
+
+
 
 
 ------------------------------------------------------------
 
--- http://www.luafaq.org/#T1.28
+--[[ http://www.luafaq.org/#T1.28
 
--- The problem with not having a 'canonical' OOP scheme comes when integrating Lua code that uses an incompatible scheme. 
--- Then all you can assume is that an object can be called with a:f() notation. Re-use of classes via inheritance is only 
--- possible if you know how that class is structured. This can be considered a problem that hinders adoption of classic OOP style in Lua.
+The problem with not having a 'canonical' OOP scheme comes when integrating Lua code that uses an incompatible scheme. 
+Then all you can assume is that an object can be called with a:f() notation. Re-use of classes via inheritance is only 
+possible if you know how that class is structured. This can be considered a problem that hinders adoption of classic OOP style in Lua.
 
--- If inheritance is not an issue, the following pattern is a quick way to create 'fat objects':
+If inheritance is not an issue, the following pattern is a quick way to create 'fat objects':
 
 function MyObject(n)
     local name -- this is our field
@@ -47,118 +153,25 @@ o:setName 'bonzo'
 o:getName()
 -- bonzo
 
-
-
-------------------------------------------------------------
-
--- https://www.reddit.com/r/lua/comments/tia21g/really_how_best_to_give_lua_an_objectclass/i1dok2a
-
-Foo = {}
-
-function Foo.new(args)
-
-  -- private fields
-  local field1 = 42
-  local field2 = "string"
-
-  -- private method
-  local function private_method (arg) return "private_method" end
-
-  local o = {}
-
-  -- public field
-  o.public_field = "hello"
-
-  -- public method
-  function o:method (arg) return "method" end
-
-  -- public method to access a private field
-  function o:get_field1 () return field1 end
-
-  -- return the object
-  return o
-end
-
-
-
--- also:
-
-Ratio = {}
-
-Ratio.add = function (left, right)
-  local gcd = function (m, n)
-    while n ~= 0 do
-      local q = m
-      m = n
-      n = q % n
-    end
-    return m
-  end
-
-  local lcm = function (m, n)
-    return ( m ~= 0 and n ~= 0 ) and m * n / gcd( m, n ) or 0
-  end
-
-  local l = left.to_pair()
-  local r = right.to_pair()
-  local m = lcm(l[2], r[2])
-  local new = (l[1] * (m / l[2])) + (r[1] * (m / r[2]))
-
-  -- Not reducing the ratio to keep illustration simpler.
-  return Ratio(new .. "/" .. m)
-end
-
-setmetatable(Ratio, 
-  { 
-    __call = 
-    function (self, s)
-
-      -- "Internal" variables, hidden via closure
-      local numerator
-      local denominator
-
-      -- The type to return
-      local t = {}
-
-      -- Metatable implementations
-      local meta = {
-        __tostring = function (self) return numerator .. "/" .. denominator end,
-        __metatable = "Ratio type",
-        __add = function (left, right) return Ratio.add(left, right) end,
-        -- TODOx:  add math operator metamethod implementations
-      }
-  
-      -- Set things up
-      local split = string.find(s,"/")
-      numerator = tonumber(string.sub(s,1,split - 1))
-      denominator = tonumber(string.sub(s,split + 1,string.len(s)))
-
-      -- Need a few things to get useful information out of the internal values
-      t.to_pair  = function () return {numerator, denominator} end
-      t.to_float = function () return numerator / denominator end
-  
-      setmetatable(t, meta)
-      return t
-  
-    end
-  })
+]]
 
 ------------------------------------------------------------
 -- https://www.lua.org/pil/16.1.html  - Classes
 
+--[[
 
 Account = { balance = 0,
             withdraw = function (self, v)  self.balance = self.balance - v  end
           }
 
-function Account:deposit (v)
+function Account:deposit(v)
   self.balance = self.balance + v
 end
 
 Account.deposit(Account, 200.00)
 Account:withdraw(100.00)
 
-function Account:new (o)
+function Account:new(o)
   o = o or {}   -- create object if user does not provide one
   setmetatable(o, self)
   self.__index = self
@@ -177,8 +190,11 @@ print(b.balance)    --> 0
 -- When we call the deposit method on b, it runs the equivalent of
 -- b.balance = b.balance + v
 
+]]
 
-------------------------------------------------------------
+---------------------- prototype --------------------------------------
+
+--[[
 
 -- https://notesbylex.com/object-prototypes.html
 
@@ -187,7 +203,11 @@ print(b.balance)    --> 0
 -- field doesn't exist in the first object. In Lua, this is achieved by using the __index Lua Table-Access Metamethods. 
 -- In the example, I'm creating a Person table which will serve as a metatable for all instances of a Person:
 
-local Person = {firstName='', lastName='', age=nil}
+local Person = { firstName='', lastName='', age=nil }
+
+function Person:getName()
+    return self.firstName..' '..self.lastName
+end
 
 function Person:new(o)
     local o = o or {}
@@ -196,54 +216,69 @@ function Person:new(o)
     return o
 end
 
-function Person:getName()
-    return self.firstName..' '..self.lastName
-end
---[[ ????
-local me = Person:new({firstName='Lex', lastName='T', age=34})
-print(me:getName())
+print(tx.dump_table_string(Person, 1, 'Person'))
+
+local me = Person:new({ firstName='Lex', lastName='T', age=34 })
+print(tx.dump_table_string(me, 1, 'me'))
+-- print(me:getName())
 
 -- I can then extend Person by creating a new object with modified parameters:
 local PersonWithMiddleName = Person:new()
 PersonWithMiddleName.middleName = ''
 
-local me = PersonWithMiddleName({firstName='Lex', lastName='T', age=34, middleName='D'})
+local me = PersonWithMiddleName({ firstName='Lex', lastName='T', age=34, middleName='D' })
+print(tx.dump_table_string(me, 1, 'me'))
 
 -- In that example, the me object will be consulted for fields. If they aren't found, PersonWithMiddleName will be looked up. 
--- If not found, since it uses Person as the __index metatable, Person will then be consulted.Javascript also uses prototypal
+-- If not found, since it uses Person as the __index metatable, Person will then be consulted. Javascript also uses prototypal
 -- inheritance at the core of its object-oriented paradigm.
+
 ]]
 
-------------------- my impl -----------------------------------------
+------------------- prototype impl -----------------------------------------
+
+
+--[[
 
 AccountXXX = { balance = 0,
            -- withdraw = function (self, v)  self.balance = self.balance - v  end
           }
 
-function AccountXXX:deposit (v)
+function AccountXXX:deposit(v)
+    print(tx.dump_table_string(self, 1, 'self1'))
     self.balance = self.balance + v
 end
 
-function AccountXXX:withdraw (v)
+function AccountXXX:withdraw(v)
     self.balance = self.balance - v
 end
 
-function AccountXXX:balance (v)
-    self.balance = self.balance - v
+-- function AccountXXX:balance(v)
+--     self.balance = self.balance - v
+-- end
+
+function AccountXXX:get_balance()
+    print(tx.dump_table_string(self, 1, 'self2'))
+    print('>>>4 '..self)    --> 77.6
+    return self.balance
 end
 
 
-function AccountXXX:new (o)
+function AccountXXX:new(o)
     o = o or {}   -- create object if user does not provide one
     setmetatable(o, self)
     self.__index = self
     return o
 end
 
-a = AccountXXX:new{balance = 0}
+-- test
+a = AccountXXX:new({ balance = 10 })
 a:deposit(100.00)
 a:withdraw(32.4)
-print('>>> '..a.balance)    --> 0
+print(tx.dump_table_string(a, 1, 'a'))
+
+print('>>>1 '..a.balance)    --> 77.6
+print('>>>2 '..a.get_balance())    --> 77.6
 
 
 -- AccountXXX.deposit(a, 100.00)
@@ -254,12 +289,29 @@ print('>>> '..a.balance)    --> 0
 -- When we call the deposit method on b, it runs the equivalent of
 -- b.balance = b.balance + v
 
+]]
 
 
-------------------- current class -----------------------------------
-require 'class'
+------------------- current class.lua -----------------------------------
 
--- the class
+-- http://lua-users.org/wiki/SimpleLuaClasses
+
+----- simple
+AccountYYY = class(function(acc,balance)
+              acc.balance = balance
+           end)
+
+function AccountYYY:withdraw(amount)
+   self.balance = self.balance - amount
+end
+
+-- can create an AccountYYY using call notation!
+acc = AccountYYY(1000)
+acc:withdraw(100)
+
+
+
+------ inheritance
 local Animal = class(
     function(a, name)
         a.name = name
@@ -276,7 +328,7 @@ function Dog:speak()
     return 'dog bark'
 end
 
--- inherit
+-- simple inheritance
 Cat = class(Animal,
     function(c, name, breed)
         Animal.__init(c, name) -- must init base!
@@ -294,7 +346,7 @@ function Lion:speak()
     return 'lion roar'
 end
 
-
+-- test
 local fido = Dog('Fido')
 local felix = Cat('Felix', 'Tabby')
 local leo = Lion('Leo', 'African')
@@ -308,11 +360,8 @@ print(tostring(leo:is_a(Dog))..' -> false')
 print(tostring(leo:is_a(Cat))..' -> true')
 
 
------------------- test ------------------------------------------
 
--- l1 = list:new()
--- l1:len()
--- l1:insert(2, o)
+------------------ stuff ------------------------------------------
 
 --[[
     __index: The indexing access operation table[key]. This event happens when table is not a table or when key is not present in table. 
