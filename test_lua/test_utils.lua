@@ -3,7 +3,8 @@ local sx = require("stringex")
 local tx = require("tableex")
 local ut = require("lbot_utils")
 
--- print('!!!', package.path)
+--- If using debugger, bind lua error() function to it.
+-- ut.config_debug(true)
 
 local M = {}
 
@@ -58,7 +59,6 @@ function M.suite_dump_table(pn)
     print(s)
     pn.UT_EQUAL(#s, 19)
 
-
 end
 
 -----------------------------------------------------------------------------
@@ -104,6 +104,30 @@ function M.suite_validation(pn)
     -- Above
     res = ut.val_integer(273, 270, 272)
     pn.UT_FALSE(res)
+
+end
+
+-----------------------------------------------------------------------------
+function M.suite_types(pn)
+
+    -- Valid array with homogenous values.
+    local t1 = { "pt1", "pt2", "pt3", "pt4" }
+    -- dbg()
+    local ok, val_type = ut.is_array(t1)
+    pn.UT_TRUE(ok)
+    pn.UT_EQUAL(val_type, 'string')
+
+    -- Valid array with non-homogenous values.
+    local t2 = { "pt1", 111, "pt3", "pt4" }
+    ok, val_type = ut.is_array(t2)
+    pn.UT_TRUE(ok)
+    pn.UT_EQUAL(val_type, nil)
+
+    -- Invalid array - not sequential.
+    local t3 = { [1]="pt1"; [3]="pt2"; [9]="pt3"; "pt4" }
+    ok, val_type = ut.is_array(t3)
+    pn.UT_FALSE(ok)
+    pn.UT_EQUAL(val_type, nil)
 
 end
 

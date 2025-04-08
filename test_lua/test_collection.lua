@@ -4,6 +4,10 @@ local tx = require("tableex")
 local sx = require("stringex")
 local ls = require("List")
 
+--- If using debugger, bind lua error() function to it.
+ut.config_debug(true)
+
+
 local M = {}
 
 -----------------------------------------------------------------------------
@@ -24,12 +28,12 @@ function M.suite_list(pn)
     local t1 = { 'fido', 'bonzo', 'moondoggie' }
     local t2 = { 'muffin', 'kitty', 'beetlejuice', 'tigger' }
 
+    -- dbg()
 
     ----- happy test
     local l1 = List(t1, 'pink bunny')
     l1:count()
 
-    -- pn.UT_EQUAL('List:pink bunny type:string len:3', l1:__tostring())
     pn.UT_EQUAL('List:pink bunny type:string len:3', tostring(l1))
     pn.UT_EQUAL(l1:count(), 3)
 
@@ -60,16 +64,14 @@ function M.suite_list(pn)
     pn.UT_EQUAL(l1:count(), 10)
     pn.UT_EQUAL(l1[5], 'kitty')
 
-
-    l1:foreach(function(v, arg) v = v..arg end, 'hello')
+    l1:foreach(function(v, arg) v = v..arg end, '_xyz')
     pn.UT_EQUAL(l1:count(), 10)
-    pn.UT_EQUAL(l1[5], 'wwwww')
-
 
     res = l1:get_range() -- clone
     pn.UT_EQUAL(res:count(), 10)
-    pn.UT_EQUAL(res[0], 'wwwww')
+    pn.UT_EQUAL(res[2], 'muffin')
 
+dbg()
     res = l1:get_range(5) -- rh
     pn.UT_EQUAL(res:count(), 5)
     pn.UT_EQUAL(res[0], 'wwwww')
