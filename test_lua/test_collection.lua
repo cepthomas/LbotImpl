@@ -5,7 +5,7 @@ local sx = require("stringex")
 local ls = require("List")
 
 --- If using debugger, bind lua error() function to it.
-ut.config_debug(true)
+ut.config_debug(false)
 
 
 local M = {}
@@ -34,7 +34,7 @@ function M.suite_list(pn)
     local l1 = List(t1, 'pink bunny')
     l1:count()
 
-    pn.UT_EQUAL('List:pink bunny type:string len:3', tostring(l1))
+    pn.UT_EQUAL('List:[pink bunny] type:string len:3', tostring(l1))
     pn.UT_EQUAL(l1:count(), 3)
 
     l1:add('end')
@@ -45,8 +45,12 @@ function M.suite_list(pn)
     l1:insert(4, 'middle')
     pn.UT_EQUAL(l1:count(), 6)
 
+    -- { 'first', 'fido', 'bonzo', 'middle', 'moondoggie', 'end' }
+
     l1:add_range(t2)
     pn.UT_EQUAL(l1:count(), 10)
+
+    -- { 'first', 'fido', 'bonzo', 'middle', 'moondoggie', 'end', 'muffin', 'kitty', 'beetlejuice', 'tigger' }
 
     pn.UT_EQUAL(l1:index_of('kitty'), 8)
     pn.UT_EQUAL(l1:index_of('nada'), nil)
@@ -56,11 +60,13 @@ function M.suite_list(pn)
 
 
     l1:sort(function(a, b) return a < b end)
+    -- 'beetlejuice', 'bonzo', 'end', 'fido', 'first', 'kitty', 'middle', 'moondoggie', 'muffin', 'tigger'
     pn.UT_EQUAL(l1:count(), 10)
     pn.UT_EQUAL(l1[5], 'first')
 
 
     l1:reverse()
+    -- 'tigger', 'muffin', 'moondoggie', 'middle', 'kitty', 'first', 'fido', 'end', 'bonzo', 'beetlejuice', 
     pn.UT_EQUAL(l1:count(), 10)
     pn.UT_EQUAL(l1[5], 'kitty')
 
@@ -71,16 +77,15 @@ function M.suite_list(pn)
     pn.UT_EQUAL(res:count(), 10)
     pn.UT_EQUAL(res[2], 'muffin')
 
-dbg()
     res = l1:get_range(5) -- rh
-    pn.UT_EQUAL(res:count(), 5)
-    pn.UT_EQUAL(res[0], 'wwwww')
+    -- 'kitty', 'first', 'fido', 'end', 'bonzo', 'beetlejuice', 
+    pn.UT_EQUAL(res:count(), 6)
+    pn.UT_EQUAL(res[3], 'fido')
 
     res = l1:get_range(3, 6) -- subset
-    pn.UT_EQUAL(res:count(), 5)
-    pn.UT_EQUAL(res[0], 'wwwww')
-
-
+    -- 'moondoggie', 'middle', 'kitty', 'first', 'fido', 'end' 
+    pn.UT_EQUAL(res:count(), 6)
+    pn.UT_EQUAL(res[4], 'first')
 
     l1:remove_at(5)
     pn.UT_EQUAL(l1:count(), 9)
