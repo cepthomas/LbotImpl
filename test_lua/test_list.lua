@@ -3,6 +3,7 @@ local ut = require("lbot_utils")
 local tx = require("tableex")
 local sx = require("stringex")
 local ls = require("List")
+local dbg = require('debugger')
 
 
 local M = {}
@@ -95,14 +96,18 @@ function M.suite_happy_path(pn)
 
 end
 
--- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-local _orig_error_func
-local _last_error_msg = '' -- {}
+
+
+
+-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+-- local _orig_error_func
+local _last_error_msg = ''
 
 local function test_error(msg, level)
     _last_error_msg = msg
-    -- _last_error_msg.add(msg)
-    -- print('ERROR '..msg..'('..tostring(level)..')')
     -- _orig_error_func(msg, level)
 end
 
@@ -110,28 +115,50 @@ end
 -----------------------------------------------------------------------------
 function M.suite_fail(pn)
 
-    -- save original error function
-    _orig_error_func = _G.error
-    _G.error = test_error
+    -- -- save original error function TODOE doesn't work for internal errors like l1:remove_at(55)
+    -- _orig_error_func = _G.error
+    -- _G.error = test_error
+
+-- pcall (f [, arg1, ···])
+-- Calls the function f with the given arguments in protected mode. This means that any error inside f is not propagated; 
+-- instead, pcall catches the error and returns a status code. Its first result is the status code (a boolean), which is true 
+-- if the call succeeds without errors. In such case, pcall also returns all results from the call, after this first result. 
+-- In case of any error, pcall returns false plus the error object. Note that errors caught by pcall do not call a message handler. 
+-- xpcall (f, msgh [, arg1, ···])
+-- This function is similar to pcall, except that it sets a new message handler msgh.
 
 
 
     local tinv = { aa="pt1", 1119, bb=90901, alist={ "qwerty", 777, b=true }, intx=5432 }
 
-print('here')
-    local l3 = List(tinv)
+    local ok, msg = pcall(List, tinv)
+    print('!!!', ok, msg)
+    -- !!! false   C:\Dev\Libs\LbotImpl\LBOT\List.lua:48: Not a List array
 
-    local t1 = { 'fido', 'bonzo', 'moondoggie' }
-    local t2 = { 'muffin', 'kitty', 'beetlejuice', 'tigger' }
+    -- local l = List(tinv)
+    -- pn.UT_EQUAL(_last_error_msg, 'Not an array')
+    -- _last_error_msg = ''
 
-    local l1 = List(t1, 'pink bunny')
+    local t = { [1]='muffin', [2]='kitty', [6]='beetlejuice', [7]='tigger' }
 
-    l1:remove_at(55)
+    ok, msg = pcall(List, t, 'bozo the clown')
+    print('!!!', ok, msg)
 
+    t = { 'muffin', 'kitty', 'beetlejuice', 'tigger' }
 
+    local l1 = List(t, 'bozo the clown')
+    -- pn.UT_EQUAL(_last_error_msg, 'Not homogenous values')
+    -- _last_error_msg = ''
 
-    -- restore
-    _G.error = _orig_error_func
+    -- ok, msg = pcall(l1.remove_at, li, 55)
+    ok, msg = pcall(l1:remove_at, 55)
+    print('!!!', ok, msg)
+
+    -- l1:remove_at(55)
+    -- 'Invalid integer:55'
+
+    -- -- restore
+    -- _G.error = _orig_error_func
 
 end
 
