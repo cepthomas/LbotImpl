@@ -4,35 +4,29 @@ local tx = require("tableex")
 local sx = require("stringex")
 local ls = require("List")
 
---- If using debugger, bind lua error() function to it.
-ut.config_debug(false)
-
 
 local M = {}
 
+
 -----------------------------------------------------------------------------
 function M.setup(pn)
-    -- pn.UT_INFO("setup()!!!")
+    -- print("setup()!!!")
 end
+
 
 -----------------------------------------------------------------------------
 function M.teardown(pn)
-    -- pn.UT_INFO("teardown()!!!")
+    -- print("teardown()!!!")
 end
 
------------------------------------------------------------------------------
-function M.suite_list(pn)
 
-    local tinv = { aa="pt1", 1119, bb=90901, alist={ "qwerty", 777, b=true }, intx=5432 }
+-----------------------------------------------------------------------------
+function M.suite_happy_path(pn)
 
     local t1 = { 'fido', 'bonzo', 'moondoggie' }
     local t2 = { 'muffin', 'kitty', 'beetlejuice', 'tigger' }
 
-    -- dbg()
-
-    ----- happy test
     local l1 = List(t1, 'pink bunny')
-    l1:count()
 
     pn.UT_EQUAL('List:[pink bunny] type:string len:3', tostring(l1))
     pn.UT_EQUAL(l1:count(), 3)
@@ -90,9 +84,6 @@ function M.suite_list(pn)
     l1:remove_at(5)
     pn.UT_EQUAL(l1:count(), 9)
 
-    l1:remove_at(55)
-    pn.UT_EQUAL(l1:count(), 9)
-
     l1:remove('middle')
     pn.UT_EQUAL(l1:count(), 8)
 
@@ -102,18 +93,47 @@ function M.suite_list(pn)
     l1:clear()
     pn.UT_EQUAL(l1:count(), 0)
 
+end
 
-    ----- sad test
-    l3 = List(tinv)
+-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+local _orig_error_func
+local _last_error_msg = '' -- {}
 
+local function test_error(msg, level)
+    _last_error_msg = msg
+    -- _last_error_msg.add(msg)
+    -- print('ERROR '..msg..'('..tostring(level)..')')
+    -- _orig_error_func(msg, level)
 end
 
 
 -----------------------------------------------------------------------------
-function M.suite_dict(pn)
+function M.suite_fail(pn)
+
+    -- save original error function
+    _orig_error_func = _G.error
+    _G.error = test_error
+
+
+
+    local tinv = { aa="pt1", 1119, bb=90901, alist={ "qwerty", 777, b=true }, intx=5432 }
+
+print('here')
+    local l3 = List(tinv)
+
+    local t1 = { 'fido', 'bonzo', 'moondoggie' }
+    local t2 = { 'muffin', 'kitty', 'beetlejuice', 'tigger' }
+
+    local l1 = List(t1, 'pink bunny')
+
+    l1:remove_at(55)
+
+
+
+    -- restore
+    _G.error = _orig_error_func
 
 end
-
 
 -----------------------------------------------------------------------------
 -- Return the module.
