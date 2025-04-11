@@ -30,29 +30,29 @@ function M.suite_stringex(pn)
     -- Without trim.
     l = sx.strsplit(s, ",", false)
     pn.UT_EQUAL(#l, 9, "Number of list entries")
-    pn.UT_EQUAL(l[1], "Ut")
-    pn.UT_EQUAL(l[2], "")
-    pn.UT_EQUAL(l[3], "turpis")
-    pn.UT_EQUAL(l[4], "   adipiscing")
-    pn.UT_EQUAL(l[5], "luctus")
-    pn.UT_EQUAL(l[6], "")
-    pn.UT_EQUAL(l[7], "pharetra   ")
-    pn.UT_EQUAL(l[8], "condimentum")
-    pn.UT_EQUAL(l[9], " ")
+    pn.UT_STR_EQUAL(l[1], "Ut")
+    pn.UT_STR_EQUAL(l[2], "")
+    pn.UT_STR_EQUAL(l[3], "turpis")
+    pn.UT_STR_EQUAL(l[4], "   adipiscing")
+    pn.UT_STR_EQUAL(l[5], "luctus")
+    pn.UT_STR_EQUAL(l[6], "")
+    pn.UT_STR_EQUAL(l[7], "pharetra   ")
+    pn.UT_STR_EQUAL(l[8], "condimentum")
+    pn.UT_STR_EQUAL(l[9], " ")
     -- With trim.
     l = sx.strsplit(s, ",", true)
     pn.UT_EQUAL(#l, 6, "Number of list entries")
-    pn.UT_EQUAL(l[1], "Ut")
-    pn.UT_EQUAL(l[2], "turpis")
-    pn.UT_EQUAL(l[3], "adipiscing")
-    pn.UT_EQUAL(l[4], "luctus")
-    pn.UT_EQUAL(l[5], "pharetra")
-    pn.UT_EQUAL(l[6], "condimentum")
+    pn.UT_STR_EQUAL(l[1], "Ut")
+    pn.UT_STR_EQUAL(l[2], "turpis")
+    pn.UT_STR_EQUAL(l[3], "adipiscing")
+    pn.UT_STR_EQUAL(l[4], "luctus")
+    pn.UT_STR_EQUAL(l[5], "pharetra")
+    pn.UT_STR_EQUAL(l[6], "condimentum")
 
     s = "No delimiters in here"
     l = sx.strsplit(s, ".")
     pn.UT_EQUAL(#l, 1, "Number of list entries")
-    pn.UT_EQUAL(l[1], "No delimiters in here")
+    pn.UT_STR_EQUAL(l[1], "No delimiters in here")
     pn.UT_NIL(l[2])
 
 
@@ -61,7 +61,7 @@ function M.suite_stringex(pn)
     -- @param str Source string.
     -- @param vars Replacement values dict.
     s = sx.interp( [[Hello {name}, welcome to {company}.]], { name = 'roberto', company = 'thieves inc' } )
-    pn.UT_EQUAL(s, "Hello roberto, welcome to thieves inc.")
+    pn.UT_STR_EQUAL(s, "Hello roberto, welcome to thieves inc.")
 
 
     -- Test ...with().

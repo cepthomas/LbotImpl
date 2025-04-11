@@ -21,7 +21,7 @@ function M.teardown(pn)
 end
 
 
------------------------------------------------------------------------------
+---------------------------------------------------------------------------
 function M.suite_happy_path(pn)
 
     local t1 = { 'fido', 'bonzo', 'moondoggie' }
@@ -29,7 +29,7 @@ function M.suite_happy_path(pn)
 
     local l1 = List(t1, 'pink bunny')
 
-    pn.UT_EQUAL('List:[pink bunny] type:string len:3', tostring(l1))
+    pn.UT_STR_EQUAL('List:[pink bunny] type:string len:3', tostring(l1))
     pn.UT_EQUAL(l1:count(), 3)
 
     l1:add('end')
@@ -57,30 +57,30 @@ function M.suite_happy_path(pn)
     l1:sort(function(a, b) return a < b end)
     -- 'beetlejuice', 'bonzo', 'end', 'fido', 'first', 'kitty', 'middle', 'moondoggie', 'muffin', 'tigger'
     pn.UT_EQUAL(l1:count(), 10)
-    pn.UT_EQUAL(l1[5], 'first')
+    pn.UT_STR_EQUAL(l1[5], 'first')
 
 
     l1:reverse()
     -- 'tigger', 'muffin', 'moondoggie', 'middle', 'kitty', 'first', 'fido', 'end', 'bonzo', 'beetlejuice', 
     pn.UT_EQUAL(l1:count(), 10)
-    pn.UT_EQUAL(l1[5], 'kitty')
+    pn.UT_STR_EQUAL(l1[5], 'kitty')
 
     l1:foreach(function(v, arg) v = v..arg end, '_xyz')
     pn.UT_EQUAL(l1:count(), 10)
 
     res = l1:get_range() -- clone
     pn.UT_EQUAL(res:count(), 10)
-    pn.UT_EQUAL(res[2], 'muffin')
+    pn.UT_STR_EQUAL(res[2], 'muffin')
 
     res = l1:get_range(5) -- rh
     -- 'kitty', 'first', 'fido', 'end', 'bonzo', 'beetlejuice', 
     pn.UT_EQUAL(res:count(), 6)
-    pn.UT_EQUAL(res[3], 'fido')
+    pn.UT_STR_EQUAL(res[3], 'fido')
 
     res = l1:get_range(3, 6) -- subset
     -- 'moondoggie', 'middle', 'kitty', 'first', 'fido', 'end' 
     pn.UT_EQUAL(res:count(), 6)
-    pn.UT_EQUAL(res[4], 'first')
+    pn.UT_STR_EQUAL(res[4], 'first')
 
     l1:remove_at(5)
     pn.UT_EQUAL(l1:count(), 9)
@@ -97,68 +97,36 @@ function M.suite_happy_path(pn)
 end
 
 
-
-
--- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
--- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
--- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
--- local _orig_error_func
-local _last_error_msg = ''
-
-local function test_error(msg, level)
-    _last_error_msg = msg
-    -- _orig_error_func(msg, level)
-end
-
-
 -----------------------------------------------------------------------------
 function M.suite_fail(pn)
 
-    -- -- save original error function TODOE doesn't work for internal errors like l1:remove_at(55)
-    -- _orig_error_func = _G.error
-    -- _G.error = test_error
+    local ok, msg = pcall(List, 'function')
+    pn.UT_TRUE(ok)
 
--- pcall (f [, arg1, ···])
--- Calls the function f with the given arguments in protected mode. This means that any error inside f is not propagated; 
--- instead, pcall catches the error and returns a status code. Its first result is the status code (a boolean), which is true 
--- if the call succeeds without errors. In such case, pcall also returns all results from the call, after this first result. 
--- In case of any error, pcall returns false plus the error object. Note that errors caught by pcall do not call a message handler. 
--- xpcall (f, msgh [, arg1, ···])
--- This function is similar to pcall, except that it sets a new message handler msgh.
+    ok, msg = pcall(List, 'unknown_type')
+    pn.UT_FALSE(ok)
+    pn.UT_STR_CONTAINS(msg, 'Invalid value type')
 
+    ok, msg = pcall(List, {})
+    pn.UT_FALSE(ok)
+    pn.UT_STR_CONTAINS(msg, 'Can\'t create a List from empty table')
 
+    ok, msg = pcall(List, { aa="pt1", 1119, bb=90901, [2.22]={ "qwerty", 777, b=true }, intx=5432 } )
+    pn.UT_FALSE(ok)
+    pn.UT_STR_CONTAINS(msg, 'Indexes must be number')
 
-    local tinv = { aa="pt1", 1119, bb=90901, alist={ "qwerty", 777, b=true }, intx=5432 }
+    ok, msg = pcall(List, { [1]='muffin', [2]='kitty', [6]='beetlejuice', [7]='tigger' })
+    pn.UT_FALSE(ok)
+    pn.UT_STR_CONTAINS(msg, 'Indexes must be sequential')
 
-    local ok, msg = pcall(List, tinv)
-    print('!!!', ok, msg)
-    -- !!! false   C:\Dev\Libs\LbotImpl\LBOT\List.lua:48: Not a List array
+    ok, msg = pcall(List, { 'muffin', 123, 'beetlejuice', 'tigger' })
+    pn.UT_FALSE(ok)
+    pn.UT_STR_CONTAINS(msg, 'Values must be homogenous')
 
-    -- local l = List(tinv)
-    -- pn.UT_EQUAL(_last_error_msg, 'Not an array')
-    -- _last_error_msg = ''
-
-    local t = { [1]='muffin', [2]='kitty', [6]='beetlejuice', [7]='tigger' }
-
-    ok, msg = pcall(List, t, 'bozo the clown')
-    print('!!!', ok, msg)
-
-    t = { 'muffin', 'kitty', 'beetlejuice', 'tigger' }
-
-    local l1 = List(t, 'bozo the clown')
-    -- pn.UT_EQUAL(_last_error_msg, 'Not homogenous values')
-    -- _last_error_msg = ''
-
-    -- ok, msg = pcall(l1.remove_at, li, 55)
-    ok, msg = pcall(l1:remove_at, 55)
-    print('!!!', ok, msg)
-
-    -- l1:remove_at(55)
-    -- 'Invalid integer:55'
-
-    -- -- restore
-    -- _G.error = _orig_error_func
+    local l1 = List({ 'muffin', 'kitty', 'beetlejuice', 'tigger' })
+    ok, msg = pcall(l1.remove_at, li, 55)
+    pn.UT_FALSE(ok)
+    pn.UT_STR_CONTAINS(msg, 'Invalid integer:55')
 
 end
 

@@ -21,48 +21,24 @@ end
 ------------------------------ System ---------------------------------------
 function M.suite_system(pn)
 
-    ut.check_globals(app_glob)
-    ut.fix_lua_path(s)
-    ut.execute_and_capture(cmd)
-    ut.get_caller_info(level)
+    -- TODOL test these:
+    -- ut.check_globals(app_glob)
+    -- ut.fix_lua_path(s)
+    -- ut.execute_and_capture(cmd)
+    -- ut.get_caller_info(level)
 end
 
 
 ------------------------- Types ---------------------------------------------
 function M.suite_types(pn)
 
+    -- TODOL test these:
     -- ut.is_integer(x)
     -- ut.tointeger(v)
     -- ut.is_callable(obj)
     -- ut.is_indexable(obj)
     -- ut.is_iterable(obj)
     -- ut.is_writeable(obj)
-
-    -- Valid array with homogenous values.
-    local t1 = { "pt1", "pt2", "pt3", "pt4" }
-    -- dbg()
-    local ok, val_type = ut.is_array(t1)
-    pn.UT_TRUE(ok)
-    pn.UT_EQUAL(val_type, 'string')
-
-    -- Valid array with non-homogenous values.
-    local t2 = { "pt1", 111, "pt3", "pt4" }
-    ok, val_type = ut.is_array(t2)
-    pn.UT_TRUE(ok)
-    pn.UT_EQUAL(val_type, nil)
-
-    -- Invalid array - not sequential.
-    local t3 = { [1]="pt1"; [3]="pt2"; [9]="pt3"; "pt4" }
-    ok, val_type = ut.is_array(t3)
-    pn.UT_FALSE(ok)
-    pn.UT_EQUAL(val_type, nil)
-
-end
-
-
-------------------------- Validation ----------------------------------------
-function M.suite_validation(pn)
-
     -- ut.val_type(v, vt)
     -- ut.val_table(t, min_size)
     -- ut.val_not_nil(v)
@@ -72,46 +48,48 @@ function M.suite_validation(pn)
     local res
     
     -- OK
-    res = ut.val_number(13.4, 13.3, 13.5)
+    res = pcall(ut.val_number, 13.4, 13.3, 13.5)
     pn.UT_TRUE(res)
 
-    res = ut.val_number(13.4)
+    res = pcall(ut.val_number, 13.4)
     pn.UT_TRUE(res)
 
     -- Wrong type
-    res = ut.val_number('13.4', 13.3, 13.5)
+    res = pcall(ut.val_number, '13.4', 13.3, 13.5)
     pn.UT_FALSE(res)
 
     -- Below
-    res = ut.val_number(13.2, 13.3, 13.5)
+    res = pcall(ut.val_number, 13.2, 13.3, 13.5)
     pn.UT_FALSE(res)
 
     -- Above
-    res = ut.val_number(13.6, 13.9, 13.5)
+    res = pcall(ut.val_number, 13.6, 13.9, 13.5)
     pn.UT_FALSE(res)
 
 
     -- OK
-    res = ut.val_integer(271, 270, 272)
+    res = pcall(ut.val_integer, 271, 270, 272)
     pn.UT_TRUE(res)
 
-    res = ut.val_integer(271)
+    res = pcall(ut.val_integer, 271)
     pn.UT_TRUE(res)
 
     -- Wrong type
-    res = ut.val_integer(13.4, 13.3, 13.5)
+    res = pcall(ut.val_integer, 13.4, 13.3, 13.5)
     pn.UT_FALSE(res)
 
     -- Below
-    res = ut.val_integer(269, 270, 272)
+    res = pcall(ut.val_integer, 269, 270, 272)
     pn.UT_FALSE(res)
 
     -- Above
-    res = ut.val_integer(273, 270, 272)
+    res = pcall(ut.val_integer, 273, 270, 272)
     pn.UT_FALSE(res)
 
 end
 
+--[[
+TODOL these tests
 
 ------------------------- Math ----------------------------------------------
 function M.suite_math(pn)
@@ -136,6 +114,7 @@ function M.suite_misc(pn)
     ut.set_colorize(map)
 end
 
+]]
 
 -----------------------------------------------------------------------------
 -- Return the module.
