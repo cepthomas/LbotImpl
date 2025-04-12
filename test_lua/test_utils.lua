@@ -21,100 +21,91 @@ end
 ------------------------------ System ---------------------------------------
 function M.suite_system(pn)
 
-    -- TODOL test these:
-    -- ut.check_globals(app_glob)
-    -- ut.fix_lua_path(s)
-    -- ut.execute_and_capture(cmd)
-    -- ut.get_caller_info(level)
-end
+    accidental_global = 0
+    local extraneous, unused = ut.check_globals( { 'appglob1', 'appglob2', 'appglob3'})
+    -- print(tx.dump_table_string(extraneous, 1, 'extraneous'))
+    -- print(tx.dump_table_string(unused, 1, 'unused'))
 
+    ut.fix_lua_path('/mypath')
+    -- print(package.path)
+    pn.UT_STR_CONTAINS(package.path, 'mypath')
 
-------------------------- Types ---------------------------------------------
-function M.suite_types(pn)
+    local res = ut.execute_and_capture('dir')
+    pn.UT_STR_CONTAINS(res, 'test_utils.lua')
 
-    -- TODOL test these:
-    -- ut.is_integer(x)
-    -- ut.tointeger(v)
-    -- ut.is_callable(obj)
-    -- ut.is_indexable(obj)
-    -- ut.is_iterable(obj)
-    -- ut.is_writeable(obj)
-    -- ut.val_type(v, vt)
-    -- ut.val_table(t, min_size)
-    -- ut.val_not_nil(v)
-    -- ut.val_func(func)
+    local fpath, line, dir = ut.get_caller_info(0)
+    -- print(0, fpath, line, dir)
+    -- 0   [C] -1  
 
+    fpath, line, dir = ut.get_caller_info(1)
+    -- print(1, fpath, line, dir)
+    -- 1   C:\Dev\Libs\LbotImpl\LBOT\lbot_utils.lua    80  C:\Dev\Libs\LbotImpl\LBOT
 
-    local res
-    
-    -- OK
-    res = pcall(ut.val_number, 13.4, 13.3, 13.5)
-    pn.UT_TRUE(res)
+    fpath, line, dir = ut.get_caller_info(2)
+    -- print(2, fpath, line, dir)
+    -- 2   C:\Dev\Libs\LbotImpl\test_lua\test_utils.lua    40  C:\Dev\Libs\LbotImpl\test_lua
 
-    res = pcall(ut.val_number, 13.4)
-    pn.UT_TRUE(res)
+    fpath, line, dir = ut.get_caller_info(3)
+    -- print(3, fpath, line, dir)
+    -- 3   [C] -1  
 
-    -- Wrong type
-    res = pcall(ut.val_number, '13.4', 13.3, 13.5)
-    pn.UT_FALSE(res)
-
-    -- Below
-    res = pcall(ut.val_number, 13.2, 13.3, 13.5)
-    pn.UT_FALSE(res)
-
-    -- Above
-    res = pcall(ut.val_number, 13.6, 13.9, 13.5)
-    pn.UT_FALSE(res)
-
-
-    -- OK
-    res = pcall(ut.val_integer, 271, 270, 272)
-    pn.UT_TRUE(res)
-
-    res = pcall(ut.val_integer, 271)
-    pn.UT_TRUE(res)
-
-    -- Wrong type
-    res = pcall(ut.val_integer, 13.4, 13.3, 13.5)
-    pn.UT_FALSE(res)
-
-    -- Below
-    res = pcall(ut.val_integer, 269, 270, 272)
-    pn.UT_FALSE(res)
-
-    -- Above
-    res = pcall(ut.val_integer, 273, 270, 272)
-    pn.UT_FALSE(res)
+    fpath, line, dir = ut.get_caller_info(4)
+    -- print(4, fpath, line, dir)
+    -- 4   C:\Dev\Libs\LbotImpl\LBOT\pnut_runner.lua   56  C:\Dev\Libs\LbotImpl\LBOT
 
 end
 
---[[
-TODOL these tests
 
 ------------------------- Math ----------------------------------------------
 function M.suite_math(pn)
-    ut.map(val, start1, stop1, start2, stop2)
-    ut.constrain(val, min, max)
-    ut.clamp(val, granularity, round)
+
+    local res = ut.constrain(55, 107.6, 553)
+    pn.UT_EQUAL(res, 107.6)
+
+    res = ut.constrain(118.9, 107.6, 553)
+    pn.UT_EQUAL(res, 118.9)
+
+    res = ut.constrain(692, 107.6, 553)
+    pn.UT_EQUAL(res, 553)
+
+    res = ut.map(19.1, -100, 100, 30, 300)
+    pn.UT_EQUAL(res, 190.785)
+
+    res = ut.clamp(-22.84, 0.1, true)
+    pn.UT_EQUAL(res, -22.8)
+
+    res = ut.clamp(411, 5, false)
+    pn.UT_EQUAL(res, 410)
+
 end
 
 
 ------------------------------ Files ----------------------------------------
 function M.suite_files(pn)
-    ut.file_read_all(fn)
-    ut.file_write_all(fn, s)
-    ut.file_append_all(fn, s)
+
+    ut.file_write_all('_test_file.txt', 'a new string')
+
+    ut.file_append_all('_test_file.txt', 'a second string')
+
+    local res = ut.file_read_all('_test_file.txt')
+    pn.UT_STR_EQUAL(res, 'a new stringa second string')
+
 end
 
 
 ------------------------------ Odds and Ends --------------------------------
 function M.suite_misc(pn)
-    ut.ternary(cond, tval, fval)
-    ut.colorize_text(text)
-    ut.set_colorize(map)
+
+    local res = ut.ternary(5 > 4, 100, 200)
+    pn.UT_EQUAL(res, 100)
+
+    ut.set_colorize( { ['red']=91, ['green']=92, ['blue']=94, ['yellow']=33, ['gray']=95, ['bred']=41 } )
+
+    -- res = ut.colorize_text('blabla')
+    -- pn.UT_STR_EQUAL(res, 'blabla')
+
 end
 
-]]
 
 -----------------------------------------------------------------------------
 -- Return the module.
