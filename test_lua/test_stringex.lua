@@ -55,14 +55,12 @@ function M.suite_stringex(pn)
     pn.UT_STR_EQUAL(l[1], "No delimiters in here")
     pn.UT_NIL(l[2])
 
-
     -- Test interp().
     -- Simple interpolated string function. Stolen/modified from http://lua-users.org/wiki/StringInterpolation.
     -- @param str Source string.
     -- @param vars Replacement values dict.
     s = sx.interp( [[Hello {name}, welcome to {company}.]], { name = 'roberto', company = 'thieves inc' } )
     pn.UT_STR_EQUAL(s, "Hello roberto, welcome to thieves inc.")
-
 
     -- Test ...with().
     s = "luctus Ut adipiscing condimentum "

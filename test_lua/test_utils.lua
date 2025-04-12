@@ -17,7 +17,6 @@ function M.teardown(pn)
     -- pn.UT_INFO("teardown()!!!")
 end
 
-
 ------------------------------ System ---------------------------------------
 function M.suite_system(pn)
 
@@ -55,7 +54,6 @@ function M.suite_system(pn)
 
 end
 
-
 ------------------------- Math ----------------------------------------------
 function M.suite_math(pn)
 
@@ -79,7 +77,6 @@ function M.suite_math(pn)
 
 end
 
-
 ------------------------------ Files ----------------------------------------
 function M.suite_files(pn)
 
@@ -91,7 +88,6 @@ function M.suite_files(pn)
     pn.UT_STR_EQUAL(res, 'a new stringa second string')
 
 end
-
 
 ------------------------------ Odds and Ends --------------------------------
 function M.suite_misc(pn)
@@ -105,7 +101,6 @@ function M.suite_misc(pn)
     -- pn.UT_STR_EQUAL(res, 'blabla')
 
 end
-
 
 -----------------------------------------------------------------------------
 -- Return the module.

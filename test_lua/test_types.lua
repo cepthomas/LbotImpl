@@ -7,7 +7,7 @@ local lt = require("lbot_types")
 
 local M = {}
 
--- TODOL tests for these.
+-- TODOL tests for more of these.
 
 -----------------------------------------------------------------------------
 function M.setup(pn)
@@ -18,7 +18,6 @@ end
 function M.teardown(pn)
     -- pn.UT_INFO("teardown()!!!")
 end
-
 
 -----------------------------------------------------------------------------
 function M.suite_basic_types(pn)
@@ -31,7 +30,6 @@ function M.suite_basic_types(pn)
     -- ut.tointeger(v)
 end
 
-
 -----------------------------------------------------------------------------
 function M.suite_validators(pn)
 
@@ -39,7 +37,6 @@ function M.suite_validators(pn)
     -- lt.val_table(t, min_size)
     -- lt.val_not_nil(v)
     -- lt.val_func(func)
-
 
     local res
 
@@ -62,7 +59,6 @@ function M.suite_validators(pn)
     res = pcall(lt.val_number, 13.6, 13.9, 13.5)
     pn.UT_FALSE(res)
 
-
     ----- val_integer
     res = pcall(lt.val_integer, 271, 270, 272)
     pn.UT_TRUE(res)
@@ -83,7 +79,6 @@ function M.suite_validators(pn)
     pn.UT_FALSE(res)
 
 end
-
 
 -----------------------------------------------------------------------------
 -- Return the module.

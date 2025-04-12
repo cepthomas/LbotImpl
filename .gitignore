@@ -54,3 +54,4 @@ Debug/
 iobj/
 ibin/
 /CppCli/Properties/launchSettings.json
+/test_lua/_test_file.txt

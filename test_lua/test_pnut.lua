@@ -15,57 +15,57 @@ end
 
 -----------------------------------------------------------------------------
 function M.suite_basic(pn)
-    pn.UT_INFO("+++ Test all UT_XXX() functions. Verification is by inspection of the report file.")
-    pn.UT_INFO("+++ Lines that should appear in the output are indicated by +++ and those that should not by ---.")
+    local PASS_STR = "!!! Pass => should not be in report" -- 16
+    local FAIL_STR = "Fail => should be in report" -- 16
 
-    pn.UT_ERROR("+++ Simple error statement.")
+    pn.UT_INFO("Test all UT_XXX() functions. Verification is by inspection of the report file.")
 
-    pn.UT_TRUE(2 + 2 == 4, "Info 1.", "---") -- pass
-    pn.UT_TRUE(2 + 2 == 5, "+++ should fail") -- fail
+    pn.UT_TRUE(2 + 2 == 4, PASS_STR)
+    pn.UT_TRUE(2 + 2 == 5, FAIL_STR)
 
-    pn.UT_FALSE(2 + 2 == 4, "+++ should fail") -- fail
-    pn.UT_FALSE(2 + 2 == 5, "---") -- pass
+    pn.UT_FALSE(2 + 2 == 4, FAIL_STR)
+    pn.UT_FALSE(2 + 2 == 5, PASS_STR)
 
-    pn.UT_NIL(nil, "---") -- pass
-    pn.UT_NIL(2, "+++ should fail") -- fail
+    pn.UT_NIL(nil, PASS_STR)
+    pn.UT_NIL(2, FAIL_STR)
 
-    pn.UT_NOT_NIL(nil, "+++ should fail") -- fail
-    pn.UT_NOT_NIL(2, "---") -- pass
+    pn.UT_NOT_NIL(nil, FAIL_STR)
+    pn.UT_NOT_NIL(2, PASS_STR)
 
-    pn.UT_EQUAL(111, 111, "---") -- pass
-    pn.UT_EQUAL(111, 112, "+++ should fail") -- fail
-    pn.UT_EQUAL(111, "111", "+++ should fail") -- fail
-    pn.UT_NOT_EQUAL("ABC", "XYZ", "---") -- pass
-    pn.UT_NOT_EQUAL("123", "123", "+++ should fail") -- fail
+    pn.UT_EQUAL(111, 111, PASS_STR)
+    pn.UT_EQUAL(111, 112, FAIL_STR)
+    pn.UT_EQUAL(111, "111", FAIL_STR)
+    pn.UT_NOT_EQUAL("ABC", "XYZ", PASS_STR)
+    pn.UT_NOT_EQUAL("123", "123", FAIL_STR)
 
-    pn.UT_STR_EQUAL("111", "111", "---") -- pass
-    pn.UT_STR_NOT_EQUAL("111", 111, "+++ should fail") -- fail
-    pn.UT_STR_NOT_EQUAL(111, "111", "+++ should fail") -- fail
-    pn.UT_STR_NOT_EQUAL("222", "111", "+++ should fail") -- fail
+    pn.UT_STR_EQUAL("111", "111", PASS_STR)
+    pn.UT_STR_NOT_EQUAL("111", 111, FAIL_STR)
+    pn.UT_STR_NOT_EQUAL(111, "111", FAIL_STR)
+    pn.UT_STR_NOT_EQUAL("222", "111", PASS_STR)
 
-    pn.UT_LESS(555, 555.1, "---") -- pass
-    pn.UT_LESS(432.01, 432.001, "+++ should fail") -- fail
+    pn.UT_LESS(555, 555.1, PASS_STR)
+    pn.UT_LESS(432.01, 432.001, FAIL_STR)
 
-    pn.UT_LESS_OR_EQUAL(555, 555.1, "---") -- pass
-    pn.UT_LESS_OR_EQUAL(555.1, 555.1, "---") -- pass
-    pn.UT_LESS_OR_EQUAL(432.01, 432.001, "+++ should fail") -- fail
+    pn.UT_LESS_OR_EQUAL(555, 555.1, PASS_STR)
+    pn.UT_LESS_OR_EQUAL(555.1, 555.1, PASS_STR)
+    pn.UT_LESS_OR_EQUAL(432.01, 432.001, FAIL_STR)
 
-    pn.UT_GREATER(432.01, 432.001, "--- Info 4.") -- pass
-    pn.UT_GREATER(555, 555.1, "+++ should fail") -- fail
+    pn.UT_GREATER(432.01, 432.001, PASS_STR)
+    pn.UT_GREATER(555, 555.1, FAIL_STR)
 
-    pn.UT_GREATER_OR_EQUAL(555.1, 555, "---") -- pass
-    pn.UT_GREATER_OR_EQUAL(555.1, 555.1, "---") -- pass
-    pn.UT_GREATER_OR_EQUAL(432.001, 432.01, "+++ should fail") -- fail
+    pn.UT_GREATER_OR_EQUAL(555.1, 555, PASS_STR)
+    pn.UT_GREATER_OR_EQUAL(555.1, 555.1, PASS_STR)
+    pn.UT_GREATER_OR_EQUAL(432.001, 432.01, FAIL_STR)
 
-    pn.UT_CLOSE(555.15, 555.16, 0.01) -- pass
-    pn.UT_CLOSE(432.02, 432.01, 0.009, "+++ should fail") -- fail
+    pn.UT_CLOSE(555.15, 555.16, 0.01)
+    pn.UT_CLOSE(432.02, 432.01, 0.009, FAIL_STR)
 
     -- Return status.
-    local stat = pn.UT_NOT_NIL(nil, "+++ should fail") -- fail
-    pn.UT_TRUE(stat, "+++ You should see me!!!")
+    local stat = pn.UT_NOT_NIL(nil, FAIL_STR)
+    pn.UT_FALSE(stat, PASS_STR)
 
-    stat = pn.UT_NIL(nil) -- pass
-    pn.UT_TRUE(stat, "---")
+    stat = pn.UT_NIL(nil)
+    pn.UT_TRUE(stat, PASS_STR)
 
     -- Check summary. Cache values first.
     num_suites_run = pn.num_suites_run
@@ -75,7 +75,7 @@ function M.suite_basic(pn)
     pn.UT_EQUAL(num_suites_run, 1)
     pn.UT_EQUAL(num_suites_failed, 1, "Info 6.")
     pn.UT_EQUAL(num_cases_run, 33)
-    pn.UT_EQUAL(num_cases_failed, 16)
+    pn.UT_EQUAL(num_cases_failed, 15)
 
 end
 

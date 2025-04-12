@@ -1,4 +1,3 @@
-
 local ut = require("lbot_utils")
 local tx = require("tableex")
 local sx = require("stringex")
@@ -8,18 +7,15 @@ local dbg = require('debugger')
 
 local M = {}
 
-
 -----------------------------------------------------------------------------
 function M.setup(pn)
     -- print("setup()!!!")
 end
 
-
 -----------------------------------------------------------------------------
 function M.teardown(pn)
     -- print("teardown()!!!")
 end
-
 
 ---------------------------------------------------------------------------
 function M.suite_happy_path(pn)
@@ -96,7 +92,6 @@ function M.suite_happy_path(pn)
 
 end
 
-
 -----------------------------------------------------------------------------
 function M.suite_fail(pn)
 
@@ -124,7 +119,7 @@ function M.suite_fail(pn)
     pn.UT_STR_CONTAINS(msg, 'Values must be homogenous')
 
     local l1 = List({ 'muffin', 'kitty', 'beetlejuice', 'tigger' })
-    ok, msg = pcall(l1.remove_at, li, 55)
+    ok, msg = pcall(l1.remove_at, l1, 55)
     pn.UT_FALSE(ok)
     pn.UT_STR_CONTAINS(msg, 'Invalid integer:55')
 
