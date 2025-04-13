@@ -7,8 +7,6 @@ local lt = require("lbot_types")
 
 local M = {}
 
--- TODOL tests for more of these.
-
 -----------------------------------------------------------------------------
 function M.setup(pn)
     -- pn.UT_INFO("setup()!!!")
@@ -22,21 +20,38 @@ end
 -----------------------------------------------------------------------------
 function M.suite_basic_types(pn)
 
-    -- lt.is_integer(x)
-    -- lt.is_callable(obj)
-    -- lt.is_indexable(obj)
-    -- lt.is_iterable(obj)
-    -- lt.is_writeable(obj)
-    -- ut.tointeger(v)
+    pn.UT_TRUE(lt.is_integer(101))
+    pn.UT_FALSE(lt.is_integer(101.0001))
+
+    local function hoohaa() end
+    pn.UT_TRUE(lt.is_callable(hoohaa))
+    pn.UT_FALSE(lt.is_callable('abcdef'))
+
+    local tbl1 = { 'aaa', 'bbb', 333 }
+    local tbl2 = { ['aaa']=777; ['bbb']='uuu'; [333]=122.2 }
+    pn.UT_TRUE(lt.is_indexable(tbl1))
+    pn.UT_TRUE(lt.is_indexable(tbl2))
+
+    pn.UT_TRUE(lt.is_iterable(tbl1))
+    pn.UT_TRUE(lt.is_iterable(tbl2))
+
+    pn.UT_FALSE(lt.is_iterable('rrr'))
+    pn.UT_FALSE(lt.is_iterable(123))
+
+    pn.UT_TRUE(lt.is_writeable(tbl1))
+    pn.UT_FALSE(lt.is_writeable(2.2))
+
+    local res = lt.tointeger(123)
+    pn.UT_EQUAL(res, 123)
+    res = lt.tointeger(123.1)
+    pn.UT_EQUAL(res, nil)
+    res = lt.tointeger('123')
+    pn.UT_EQUAL(res, 123)
+
 end
 
 -----------------------------------------------------------------------------
 function M.suite_validators(pn)
-
-    -- lt.val_type(v, vt)
-    -- lt.val_table(t, min_size)
-    -- lt.val_not_nil(v)
-    -- lt.val_func(func)
 
     local res
 
@@ -76,6 +91,33 @@ function M.suite_validators(pn)
 
     -- Above
     res = pcall(lt.val_integer, 273, 270, 272)
+    pn.UT_FALSE(res)
+
+    ----- val_xxx
+    local tbl = {}
+    pn.UT_TRUE(lt.val_type(tbl, 'table'))
+    pn.UT_TRUE(lt.val_type(123, 'integer'))
+    pn.UT_TRUE(lt.val_type(123.1, 'number'))
+    pn.UT_TRUE(lt.val_type(false, 'boolean'))
+    res = pcall(lt.val_type, '123', 'table')
+    pn.UT_FALSE(res)
+
+    local tbl1 = { 'aaa', 'bbb', 333 }
+    local tbl2 = { ['aaa']=777; ['bbb']='uuu'; [333]=122.2 }
+
+    pn.UT_TRUE(lt.val_table(tbl1, 3))
+    res = pcall(lt.val_table, tbl1, 4)
+    pn.UT_FALSE(res)
+    res = pcall(lt.val_table, 'tbl1', 4)
+    pn.UT_FALSE(res)
+
+    pn.UT_TRUE(lt.val_not_nil(tbl1))
+    res = pcall(lt.val_not_nil, nil)
+    pn.UT_FALSE(res)
+
+    local function hoohaa() end
+    pn.UT_TRUE(lt.val_func(hoohaa))
+    res = pcall(lt.val_func, 123)
     pn.UT_FALSE(res)
 
 end
