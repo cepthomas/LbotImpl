@@ -13,7 +13,7 @@ local Animal = Class(
         a.name = name
     end)
 
-function Animal:__tostring()
+function Animal:__tostring()    
     return self.name..': '..self:speak()
 end
 
