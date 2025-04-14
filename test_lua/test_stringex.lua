@@ -1,18 +1,18 @@
--- Unit tests for stringex.
+-- Unit tests for stringex.lua.
 
 local sx = require("stringex")
 
 local M = {}
 
------------------------------------------------------------------------------
-function M.setup(pn)
-    -- pn.UT_INFO("setup()!!!")
-end
+-- -----------------------------------------------------------------------------
+-- function M.setup(pn)
+--     -- pn.UT_INFO("setup()!!!")
+-- end
 
------------------------------------------------------------------------------
-function M.teardown(pn)
-    -- pn.UT_INFO("teardown()!!!")
-end
+-- -----------------------------------------------------------------------------
+-- function M.teardown(pn)
+--     -- pn.UT_INFO("teardown()!!!")
+-- end
 
 -----------------------------------------------------------------------------
 function M.suite_stringex(pn)

@@ -1,21 +1,20 @@
+-- Unit tests for tableex.lua.
 
-local ut = require("lbot_utils")
 local tx = require("tableex")
-local sx = require("stringex")
 
 
 local M = {}
 
 
------------------------------------------------------------------------------
-function M.setup(pn)
-    -- print("setup()!!!")
-end
+-- -----------------------------------------------------------------------------
+-- function M.setup(pn)
+--     -- print("setup()!!!")
+-- end
 
------------------------------------------------------------------------------
-function M.teardown(pn)
-    -- print("teardown()!!!")
-end
+-- -----------------------------------------------------------------------------
+-- function M.teardown(pn)
+--     -- print("teardown()!!!")
+-- end
 
 -----------------------------------------------------------------------------
 function M.suite_dump_table(pn)

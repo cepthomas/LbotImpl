@@ -1,7 +1,5 @@
+-- Unit tests for lbot_types.lua.
 
-local sx = require("stringex")
-local tx = require("tableex")
-local ut = require("lbot_utils")
 local lt = require("lbot_types")
 
 
@@ -103,7 +101,6 @@ function M.suite_validators(pn)
     pn.UT_FALSE(res)
 
     local tbl1 = { 'aaa', 'bbb', 333 }
-    local tbl2 = { ['aaa']=777; ['bbb']='uuu'; [333]=122.2 }
 
     pn.UT_TRUE(lt.val_table(tbl1, 3))
     res = pcall(lt.val_table, tbl1, 4)

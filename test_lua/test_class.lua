@@ -1,6 +1,6 @@
--- Unit tests for class.lua.
+-- Unit tests for Class.lua.
 
-require 'class'
+require('Class')
 
 
 -- Create the namespace/module.
@@ -8,7 +8,7 @@ local M = {}
 
 
 ------------------- Test classes -----------------------------------
-local Animal = class(
+local Animal = Class(
     function(a, name)
         a.name = name
     end)
@@ -18,14 +18,14 @@ function Animal:__tostring()
 end
 
 ---------- create
-Dog = class(Animal)
+Dog = Class(Animal)
 
 function Dog:speak()
     return 'bark'
 end
 
 ---------- inherit
-Cat = class(Animal,
+Cat = Class(Animal,
     function(c, name, breed)
         Animal.__init(c, name) -- must init base!
         c.breed = breed
@@ -36,22 +36,22 @@ function Cat:speak()
 end
 
 ---------- create
-Lion = class(Cat)
+Lion = Class(Cat)
 
 function Lion:speak()
     return 'roar'
 end
 
 
------------------------------------------------------------------------------
-function M.setup(pn)
-    -- pn.UT_INFO("setup()!!!")
-end
+-- -----------------------------------------------------------------------------
+-- function M.setup(pn)
+--     -- pn.UT_INFO("setup()!!!")
+-- end
 
------------------------------------------------------------------------------
-function M.teardown(pn)
-    -- pn.UT_INFO("teardown()!!!")
-end
+-- -----------------------------------------------------------------------------
+-- function M.teardown(pn)
+--     -- pn.UT_INFO("teardown()!!!")
+-- end
 
 -----------------------------------------------------------------------------
 function M.suite_class(pn)

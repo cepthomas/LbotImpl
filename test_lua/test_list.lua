@@ -1,21 +1,17 @@
-local ut = require("lbot_utils")
-local tx = require("tableex")
-local sx = require("stringex")
-local ls = require("List")
-local dbg = require('debugger')
+-- Unit tests for List.lua.
+
+require('List')
 
 
 local M = {}
 
------------------------------------------------------------------------------
-function M.setup(pn)
-    -- print("setup()!!!")
-end
+-- -----------------------------------------------------------------------------
+-- function M.setup(pn)
+-- end
 
------------------------------------------------------------------------------
-function M.teardown(pn)
-    -- print("teardown()!!!")
-end
+-- -----------------------------------------------------------------------------
+-- function M.teardown(pn)
+-- end
 
 ---------------------------------------------------------------------------
 function M.suite_happy_path(pn)
@@ -64,7 +60,7 @@ function M.suite_happy_path(pn)
     l1:foreach(function(v, arg) v = v..arg end, '_xyz')
     pn.UT_EQUAL(l1:count(), 10)
 
-    res = l1:get_range() -- clone
+    local res = l1:get_range() -- clone
     pn.UT_EQUAL(res:count(), 10)
     pn.UT_STR_EQUAL(res[2], 'muffin')
 

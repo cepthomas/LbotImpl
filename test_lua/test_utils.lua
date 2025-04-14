@@ -1,6 +1,5 @@
+-- Unit tests for lbot_utils.lua.
 
-local sx = require("stringex")
-local tx = require("tableex")
 local ut = require("lbot_utils")
 
 
@@ -20,7 +19,9 @@ end
 ------------------------------ System ---------------------------------------
 function M.suite_system(pn)
 
+---@diagnostic disable-next-line: lowercase-global
     accidental_global = 0
+---@diagnostic disable-next-line: unused-local
     local extraneous, unused = ut.check_globals( { 'appglob1', 'appglob2', 'appglob3'})
     -- print(tx.dump_table_string(extraneous, 1, 'extraneous'))
     -- print(tx.dump_table_string(unused, 1, 'unused'))
@@ -31,26 +32,17 @@ function M.suite_system(pn)
 
     local res = ut.execute_and_capture('dir')
     pn.UT_STR_CONTAINS(res, 'test_utils.lua')
+    pn.UT_STR_CONTAINS(res, '<DIR>          ..')
 
-    local fpath, line, dir = ut.get_caller_info(0)
-    -- print(0, fpath, line, dir)
-    -- 0   [C] -1  
+    local fpath, line, dir = ut.get_caller_info(2)
+    pn.UT_STR_CONTAINS(fpath, '\\LbotImpl\\test_lua\\test_utils.lua')
+    pn.UT_EQUAL(line, 37)
+    pn.UT_STR_CONTAINS(dir, '\\LbotImpl\\test_lua')
 
-    fpath, line, dir = ut.get_caller_info(1)
-    -- print(1, fpath, line, dir)
-    -- 1   C:\Dev\Libs\LbotImpl\LBOT\lbot_utils.lua    80  C:\Dev\Libs\LbotImpl\LBOT
-
-    fpath, line, dir = ut.get_caller_info(2)
-    -- print(2, fpath, line, dir)
-    -- 2   C:\Dev\Libs\LbotImpl\test_lua\test_utils.lua    40  C:\Dev\Libs\LbotImpl\test_lua
-
-    fpath, line, dir = ut.get_caller_info(3)
-    -- print(3, fpath, line, dir)
-    -- 3   [C] -1  
-
-    fpath, line, dir = ut.get_caller_info(4)
-    -- print(4, fpath, line, dir)
-    -- 4   C:\Dev\Libs\LbotImpl\LBOT\pnut_runner.lua   56  C:\Dev\Libs\LbotImpl\LBOT
+    -- for i = 0, 6 do
+    --     local fpath, line, dir = ut.get_caller_info(i)
+    --     print(i..' '..fpath..'('..line..') dir['..dir..']')
+    -- end
 
 end
 
