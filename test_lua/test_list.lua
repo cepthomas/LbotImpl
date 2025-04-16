@@ -20,6 +20,7 @@ function M.suite_happy_path(pn)
     local t2 = { 'muffin', 'kitty', 'beetlejuice', 'tigger' }
 
     local l1 = List(t1, 'pink bunny')
+    -- print(l1:dump())
 
     pn.UT_STR_EQUAL('List:[pink bunny] type:string len:3', tostring(l1))
     pn.UT_EQUAL(l1:count(), 3)
