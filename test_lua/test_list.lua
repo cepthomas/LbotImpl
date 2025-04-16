@@ -20,7 +20,6 @@ function M.suite_happy_path(pn)
     local t2 = { 'muffin', 'kitty', 'beetlejuice', 'tigger' }
 
     local l1 = List(t1, 'pink bunny')
-    -- print(l1:dump())
 
     pn.UT_STR_EQUAL('List:[pink bunny] type:string len:3', tostring(l1))
     pn.UT_EQUAL(l1:count(), 3)
@@ -92,33 +91,30 @@ end
 -----------------------------------------------------------------------------
 function M.suite_fail(pn)
 
-    local ok, msg = pcall(List, 'function')
-    pn.UT_TRUE(ok)
-
-    ok, msg = pcall(List, 'unknown_type')
-    pn.UT_FALSE(ok)
-    pn.UT_STR_CONTAINS(msg, 'Invalid value type')
-
-    ok, msg = pcall(List, {})
-    pn.UT_FALSE(ok)
-    pn.UT_STR_CONTAINS(msg, 'Can\'t create a List from empty table')
-
-    ok, msg = pcall(List, { aa="pt1", 1119, bb=90901, [2.22]={ "qwerty", 777, b=true }, intx=5432 } )
-    pn.UT_FALSE(ok)
-    pn.UT_STR_CONTAINS(msg, 'Indexes must be number')
-
-    ok, msg = pcall(List, { [1]='muffin', [2]='kitty', [6]='beetlejuice', [7]='tigger' })
-    pn.UT_FALSE(ok)
-    pn.UT_STR_CONTAINS(msg, 'Indexes must be sequential')
-
-    ok, msg = pcall(List, { 'muffin', 123, 'beetlejuice', 'tigger' })
-    pn.UT_FALSE(ok)
-    pn.UT_STR_CONTAINS(msg, 'Values must be homogenous')
-
+    -- Init from table.
     local l1 = List({ 'muffin', 'kitty', 'beetlejuice', 'tigger' })
+    pn.UT_EQUAL(l1:count(), 4)
+
+    local ok, msg = pcall(l1.add, 123)
+    pn.UT_FALSE(ok)
+    pn.UT_STR_CONTAINS(msg, 'Values not homogenous')
+
     ok, msg = pcall(l1.remove_at, l1, 55)
     pn.UT_FALSE(ok)
     pn.UT_STR_CONTAINS(msg, 'Invalid integer:55')
+
+    -- Init from nothing.
+    local l2 = List()
+    pn.UT_EQUAL(l2:count(), 0)
+
+    ok, msg = pcall(l2.add, l2, true)
+    print(ok, msg)
+    pn.UT_TRUE(ok)
+    pn.UT_EQUAL(l2:count(), 1)
+
+    ok, msg = pcall(l2.add, l2, {})
+    pn.UT_FALSE(ok)
+    pn.UT_STR_CONTAINS(msg, 'Values not homogenous')
 
 end
 
