@@ -22,9 +22,9 @@ function M.suite_system(pn)
 ---@diagnostic disable-next-line: lowercase-global
     accidental_global = 0
 ---@diagnostic disable-next-line: unused-local
-    local extraneous, unused = ut.check_globals( { 'appglob1', 'appglob2', 'appglob3'})
-    -- print(tx.dump_table_string(extraneous, 1, 'extraneous'))
-    -- print(tx.dump_table_string(unused, 1, 'unused'))
+    local extraneous, unused = ut.check_globals({ 'appglob1', 'appglob2', 'appglob3'})
+    -- print(ut.dump_table(extraneous, 'extraneous', 1))
+    -- print(ut.dump_table(unused, 'unused', 1))
 
     ut.fix_lua_path('/mypath')
     -- print(package.path)
@@ -82,6 +82,29 @@ function M.suite_files(pn)
 end
 
 ------------------------------ Odds and Ends --------------------------------
+function M.suite_dump_table(pn)
+
+    -- Test dump_table().
+    local t1 = { aa="pt1", bb=90901, alist={ "qwerty", 777, temb1={ jj="pt8", b=true, temb2={ num=1.517, dd="strdd" } }, intx=5432}}
+
+    local d = ut.dump_table(t1, '000', 0)
+    pn.UT_EQUAL(#d, 70)
+    -- print(d)
+
+    d = ut.dump_table(t1, '111', 1)
+    pn.UT_EQUAL(#d, 168)
+
+    d = ut.dump_table(t1, '222', 2)
+    pn.UT_EQUAL(#d, 251)
+
+    d = ut.dump_table(t1, '333', 3)
+    pn.UT_EQUAL(#d, 321)
+
+    d = ut.dump_table(t1, '444', 4)
+    pn.UT_EQUAL(#d, 321)
+
+end
+
 function M.suite_misc(pn)
 
     local res = ut.ternary(5 > 4, 100, 200)

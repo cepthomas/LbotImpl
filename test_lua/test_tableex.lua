@@ -1,5 +1,6 @@
 -- Unit tests for tableex.lua.
 
+local ut = require("lbot_utils")
 local tx = require("tableex")
 
 
@@ -16,46 +17,45 @@ local M = {}
 --     -- print("teardown()!!!")
 -- end
 
+
+
+
+-- __tostring = function(self) return string.format('%s:(%s:%s)[%d] "%s"',
+-- function dd:add_range(other)
+-- function dd:class() return getmetatable(dd).class end
+-- function dd:clear()
+-- function dd:contains_value(tbl, val)
+-- function dd:copy(tbl)
+-- function dd:count()
+-- function dd:key_type() return getmetatable(dd).key_type end
+-- function dd:keys()
+-- function dd:name() return getmetatable(dd).name end
+-- function dd:value_type() return getmetatable(dd).value_type end
+-- function dd:values()
+-- function Tableex(t, name)
+
+
 -----------------------------------------------------------------------------
-function M.suite_dump_table(pn)
+function M.suite_xxx_table(pn)
 
     -- Test dump_table().
-    local tt = { aa="pt1", bb=90901, alist={ "qwerty", 777, temb1={ jj="pt8", b=true, temb2={ num=1.517, dd="strdd" } }, intx=5432}}
+    local t1 = { aa="pt1", bb=90901, alist={ "qwerty", 777, temb1={ jj="pt8", b=true, temb2={ num=1.517, dd="strdd" } }, intx=5432}}
 
-    local d = tx.dump_table(tt, 0)
-    pn.UT_EQUAL(#d, 4)
+    local d = ut.dump_table(t1, '000', 0)
+    pn.UT_EQUAL(#d, 70)
+    -- print(d)
 
-    d = tx.dump_table(tt, 1)
-    pn.UT_EQUAL(#d, 8)
+    d = ut.dump_table(t1, '111', 1)
+    pn.UT_EQUAL(#d, 168)
 
-    d = tx.dump_table(tt, 2)
-    pn.UT_EQUAL(#d, 11)
+    d = ut.dump_table(t1, '222', 2)
+    pn.UT_EQUAL(#d, 251)
 
-    d = tx.dump_table(tt, 3)
-    pn.UT_EQUAL(#d, 13)
+    d = ut.dump_table(t1, '333', 3)
+    pn.UT_EQUAL(#d, 321)
 
-    d = tx.dump_table(tt, 4)
-    pn.UT_EQUAL(#d, 13)
-
-    local s = tx.dump_table_string(tt, 0, 'doody')
-    pn.UT_EQUAL(#s, 94)
-
-    s = tx.dump_table_string(tt, 1)
-    pn.UT_EQUAL(#s, 191)
-
-    s = tx.dump_table_string(tt, 2)
-    pn.UT_EQUAL(#s, 272)
-
-    s = tx.dump_table_string(tt, 3)
-    pn.UT_EQUAL(#s, 316)
-
-    s = tx.dump_table_string(tt, 4)
-    pn.UT_EQUAL(#s, 316)
-
-    local tl = {'aaa', 'bbb', 'ccc', 'ddd', 'eee'}
-    s = tx.dump_list(tl)
-    -- print(s)
-    pn.UT_EQUAL(#s, 19)
+    d = ut.dump_table(t1, '444', 4)
+    pn.UT_EQUAL(#d, 321)
 
 end
 

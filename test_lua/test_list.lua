@@ -21,7 +21,7 @@ function M.suite_happy_path(pn)
 
     local l1 = List(t1, 'pink bunny')
 
-    pn.UT_STR_EQUAL('List:[pink bunny] type:string len:3', tostring(l1))
+    pn.UT_STR_EQUAL('List:(string)[3] "pink bunny"', tostring(l1))
     pn.UT_EQUAL(l1:count(), 3)
 
     l1:add('end')
@@ -108,7 +108,6 @@ function M.suite_fail(pn)
     pn.UT_EQUAL(l2:count(), 0)
 
     ok, msg = pcall(l2.add, l2, true)
-    print(ok, msg)
     pn.UT_TRUE(ok)
     pn.UT_EQUAL(l2:count(), 1)
 
