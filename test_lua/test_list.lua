@@ -1,6 +1,7 @@
 -- Unit tests for List.lua.
 
 require('List')
+local sx = require("stringex")
 
 
 local M = {}
@@ -13,16 +14,26 @@ local M = {}
 -- function M.teardown(pn)
 -- end
 
+
+
 ---------------------------------------------------------------------------
 function M.suite_happy_path(pn)
 
     local t1 = { 'fido', 'bonzo', 'moondoggie' }
     local t2 = { 'muffin', 'kitty', 'beetlejuice', 'tigger' }
+    local t3 = { 'muffin', 'xxx', 'kitty', 'beetlejuice', 'tigger', 'xxx', 'fido', 'bonzo', 'moondoggie', 'xxx' }
 
     local l1 = List(t1, 'pink bunny')
-
-    pn.UT_STR_EQUAL('List:(string)[3] "pink bunny"', tostring(l1))
     pn.UT_EQUAL(l1:count(), 3)
+    local s = l1:dump()
+    print(s)
+
+
+    -- metatable
+    pn.UT_STR_EQUAL('pink bunny', l1:name())
+    pn.UT_STR_EQUAL('string', l1:value_type())
+    pn.UT_STR_EQUAL('List', l1:class())
+    pn.UT_STR_EQUAL('List:(string)[3] "pink bunny"', tostring(l1))
 
     l1:add('end')
     pn.UT_EQUAL(l1:count(), 4)
@@ -31,12 +42,10 @@ function M.suite_happy_path(pn)
     pn.UT_EQUAL(l1:count(), 5)
     l1:insert(4, 'middle')
     pn.UT_EQUAL(l1:count(), 6)
-
     -- { 'first', 'fido', 'bonzo', 'middle', 'moondoggie', 'end' }
 
     l1:add_range(t2)
     pn.UT_EQUAL(l1:count(), 10)
-
     -- { 'first', 'fido', 'bonzo', 'middle', 'moondoggie', 'end', 'muffin', 'kitty', 'beetlejuice', 'tigger' }
 
     pn.UT_EQUAL(l1:index_of('kitty'), 8)
@@ -51,14 +60,29 @@ function M.suite_happy_path(pn)
     pn.UT_EQUAL(l1:count(), 10)
     pn.UT_STR_EQUAL(l1[5], 'first')
 
-
     l1:reverse()
     -- 'tigger', 'muffin', 'moondoggie', 'middle', 'kitty', 'first', 'fido', 'end', 'bonzo', 'beetlejuice', 
     pn.UT_EQUAL(l1:count(), 10)
     pn.UT_STR_EQUAL(l1[5], 'kitty')
 
-    l1:foreach(function(v, arg) v = v..arg end, '_xyz')
-    pn.UT_EQUAL(l1:count(), 10)
+    -- find
+    local l3 = List(t3, 'find')
+    local ind = l3:find('zzz')
+    pn.UT_NIL(ind)
+    ind = l3:find('xxx')
+    pn.UT_EQUAL(ind, 2)
+    ind = l3:find('xxx', ind + 1)
+    pn.UT_EQUAL(ind, 6)
+    ind = l3:find('xxx', ind + 1)
+    pn.UT_EQUAL(ind, 10)
+    ind = l3:find('xxx', ind + 1)
+    pn.UT_NIL(ind)
+
+    local all = l3:find_all(function(v) return sx.contains(v, 'zzzzzz') end)
+    pn.UT_EQUAL(all:count(), 0)
+    local all = l3:find_all(function(v) return sx.contains(v, 't') end)
+    pn.UT_EQUAL(all:count(), 3)
+
 
     local res = l1:get_range() -- clone
     pn.UT_EQUAL(res:count(), 10)

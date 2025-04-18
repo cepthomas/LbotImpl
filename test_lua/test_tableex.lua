@@ -19,45 +19,46 @@ local M = {}
 
 
 
-
+-- TODOL test these:
 -- __tostring = function(self) return string.format('%s:(%s:%s)[%d] "%s"',
--- function dd:add_range(other)
--- function dd:class() return getmetatable(dd).class end
--- function dd:clear()
--- function dd:contains_value(tbl, val)
--- function dd:copy(tbl)
--- function dd:count()
--- function dd:key_type() return getmetatable(dd).key_type end
--- function dd:keys()
--- function dd:name() return getmetatable(dd).name end
--- function dd:value_type() return getmetatable(dd).value_type end
--- function dd:values()
--- function Tableex(t, name)
+-- class() return getmetatable(dd).class end
+-- key_type() return getmetatable(dd).key_type end
+-- name() return getmetatable(dd).name end
+-- value_type() return getmetatable(dd).value_type end
+-- add_range(other)
+-- clear()
+-- contains_value(tbl, val)
+-- copy(tbl)
+-- count()
+-- keys()
+-- values()
+-- leex(t, name)
+
 
 
 -----------------------------------------------------------------------------
-function M.suite_xxx_table(pn)
+-- function M.suite_table(pn)
 
-    -- Test dump_table().
-    local t1 = { aa="pt1", bb=90901, alist={ "qwerty", 777, temb1={ jj="pt8", b=true, temb2={ num=1.517, dd="strdd" } }, intx=5432}}
+--     -- Test dump_table().
+--     local t1 = { aa="pt1", bb=90901, alist={ "qwerty", 777, temb1={ jj="pt8", b=true, temb2={ num=1.517, dd="strdd" } }, intx=5432}}
 
-    local d = ut.dump_table(t1, '000', 0)
-    pn.UT_EQUAL(#d, 70)
-    -- print(d)
+--     local d = ut.dump_table(t1, '000', 0)
+--     pn.UT_EQUAL(#d, 70)
+--     -- print(d)
 
-    d = ut.dump_table(t1, '111', 1)
-    pn.UT_EQUAL(#d, 168)
+--     d = ut.dump_table(t1, '111', 1)
+--     pn.UT_EQUAL(#d, 168)
 
-    d = ut.dump_table(t1, '222', 2)
-    pn.UT_EQUAL(#d, 251)
+--     d = ut.dump_table(t1, '222', 2)
+--     pn.UT_EQUAL(#d, 251)
 
-    d = ut.dump_table(t1, '333', 3)
-    pn.UT_EQUAL(#d, 321)
+--     d = ut.dump_table(t1, '333', 3)
+--     pn.UT_EQUAL(#d, 321)
 
-    d = ut.dump_table(t1, '444', 4)
-    pn.UT_EQUAL(#d, 321)
+--     d = ut.dump_table(t1, '444', 4)
+--     pn.UT_EQUAL(#d, 321)
 
-end
+-- end
 
 -----------------------------------------------------------------------------
 -- Return the module.

@@ -35,8 +35,8 @@ function M.suite_system(pn)
     pn.UT_STR_CONTAINS(res, '<DIR>          ..')
 
     local fpath, line, dir = ut.get_caller_info(2)
+    pn.UT_EQUAL(line, 37) -- line of call above
     pn.UT_STR_CONTAINS(fpath, '\\LbotImpl\\test_lua\\test_utils.lua')
-    pn.UT_EQUAL(line, 37)
     pn.UT_STR_CONTAINS(dir, '\\LbotImpl\\test_lua')
 
     -- for i = 0, 6 do
@@ -82,7 +82,7 @@ function M.suite_files(pn)
 end
 
 ------------------------------ Odds and Ends --------------------------------
-function M.suite_dump_table(pn)
+function M.suite_table(pn)
 
     -- Test dump_table().
     local t1 = { aa="pt1", bb=90901, alist={ "qwerty", 777, temb1={ jj="pt8", b=true, temb2={ num=1.517, dd="strdd" } }, intx=5432}}
