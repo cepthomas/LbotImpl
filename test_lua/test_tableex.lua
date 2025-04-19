@@ -1,7 +1,7 @@
--- Unit tests for tableex.lua.
+-- Unit tests for Tableex.lua.
 
-local ut = require("lbot_utils")
-local tx = require("tableex")
+require("Tableex")
+-- local ut = require("lbot_utils")
 
 
 local M = {}
@@ -18,29 +18,77 @@ local M = {}
 -- end
 
 
+---------------------------------------------------------------------------
+function M.suite_happy_path(pn)
 
--- TODOL test these:
--- __tostring = function(self) return string.format('%s:(%s:%s)[%d] "%s"',
--- class() return getmetatable(dd).class end
--- key_type() return getmetatable(dd).key_type end
--- name() return getmetatable(dd).name end
--- value_type() return getmetatable(dd).value_type end
--- add_range(other)
--- clear()
--- contains_value(tbl, val)
--- copy(tbl)
--- count()
--- keys()
--- values()
--- leex(t, name)
+    local t1 = Tableex(
+    {
+        aa="pt1",
+        bb=90901,
+        alist=
+        {
+            "qwerty",
+            777,
+            temb1=
+            {
+                jj="pt8",
+                b=true,
+                temb2=
+                {
+                    num=1.517,
+                    dd="strdd"
+                }
+            },
+            intx=5432
+        }
+    },
+    'pink bunny')
+
+    local s = t1:dump()
+    print(s)
+    pn.UT_EQUAL(t1:count(), 3)
 
 
+    -- metatable
+    pn.UT_STR_EQUAL('pink bunny', t1:name())
+    pn.UT_STR_EQUAL('string', t1:value_type())
+    pn.UT_STR_EQUAL('string', t1:value_type())
+    pn.UT_STR_EQUAL('Tableex', t1:class())
+    pn.UT_STR_EQUAL('Tableex:(string)[3] "pink bunny"', tostring(t1))
 
------------------------------------------------------------------------------
--- function M.suite_table(pn)
+    local l = t1:keys()
+    pn.UT_EQUAL(l:count(), 3)
+    print('keys', l)
+
+    l = t1:values()
+    pn.UT_EQUAL(l:count(), 3)
+    print('values', l)
+
+
+    local t2 =
+    {
+        color='blue',
+        something={name='bazoo', count=55},
+    }
+
+    t1:add_range(t2)
+    pn.UT_EQUAL(t1:count(), 5)
+
+    pn.UT_EQUAL(t1:contains_value('bb'), 90901)
+    pn.UT_EQUAL(t1:contains_value('color'), 'blue')
+    pn.UT_NIL(t1:contains_value('nada'))
+
+
+    local t3 = t1:copy(t1.something)
+    pn.UT_EQUAL(t3:count(), 55)
+
+
+    t1:clear()
+    pn.UT_EQUAL(t1:count(), 0)
+
+
 
 --     -- Test dump_table().
---     local t1 = { aa="pt1", bb=90901, alist={ "qwerty", 777, temb1={ jj="pt8", b=true, temb2={ num=1.517, dd="strdd" } }, intx=5432}}
 
 --     local d = ut.dump_table(t1, '000', 0)
 --     pn.UT_EQUAL(#d, 70)
@@ -57,6 +105,43 @@ local M = {}
 
 --     d = ut.dump_table(t1, '444', 4)
 --     pn.UT_EQUAL(#d, 321)
+
+end
+
+
+
+-----------------------------------------------------------------------------
+function M.suite_sad_path(pn)
+
+    -- Init from table.
+    local t1 = Tableex({ aa="pt1", bb=90901, alist={ "qwerty", 777, temb1={ jj="pt8", b=true, temb2={ num=1.517, dd="strdd" } }, intx=5432}}, 'pink bunny')
+    pn.UT_EQUAL(t1:count(), 4)
+
+    local ok, msg = pcall(t1.add, 123)
+    pn.UT_FALSE(ok)
+    pn.UT_STR_CONTAINS(msg, 'Values not homogenous')
+
+    ok, msg = pcall(t1.remove_at, t1, 55)
+    pn.UT_FALSE(ok)
+    pn.UT_STR_CONTAINS(msg, 'Invalid integer:55')
+
+    -- Init from nothing.
+    local l2 = Tableex()
+    pn.UT_EQUAL(l2:count(), 0)
+
+    ok, msg = pcall(l2.add, l2, true)
+    pn.UT_TRUE(ok)
+    pn.UT_EQUAL(l2:count(), 1)
+
+    ok, msg = pcall(l2.add, l2, {})
+    pn.UT_FALSE(ok)
+    pn.UT_STR_CONTAINS(msg, 'Values not homogenous')
+
+end
+
+-----------------------------------------------------------------------------
+-- function M.suite_table(pn)
+
 
 -- end
 

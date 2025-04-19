@@ -16,7 +16,8 @@ local M = {}
 --     -- pn.UT_INFO("teardown()!!!")
 -- end
 
------------------------------- System ---------------------------------------
+
+-----------------------------------------------------------------------------
 function M.suite_system(pn)
 
 ---@diagnostic disable-next-line: lowercase-global
@@ -46,7 +47,7 @@ function M.suite_system(pn)
 
 end
 
-------------------------- Math ----------------------------------------------
+-----------------------------------------------------------------------------
 function M.suite_math(pn)
 
     local res = ut.constrain(55, 107.6, 553)
@@ -69,7 +70,7 @@ function M.suite_math(pn)
 
 end
 
------------------------------- Files ----------------------------------------
+-----------------------------------------------------------------------------
 function M.suite_files(pn)
 
     ut.file_write_all('_test_file.txt', 'a new string')
@@ -81,7 +82,7 @@ function M.suite_files(pn)
 
 end
 
------------------------------- Odds and Ends --------------------------------
+-----------------------------------------------------------------------------
 function M.suite_table(pn)
 
     -- Test dump_table().
@@ -105,6 +106,7 @@ function M.suite_table(pn)
 
 end
 
+-----------------------------------------------------------------------------
 function M.suite_misc(pn)
 
     local res = ut.ternary(5 > 4, 100, 200)

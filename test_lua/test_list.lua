@@ -19,15 +19,9 @@ local M = {}
 ---------------------------------------------------------------------------
 function M.suite_happy_path(pn)
 
-    local t1 = { 'fido', 'bonzo', 'moondoggie' }
-    local t2 = { 'muffin', 'kitty', 'beetlejuice', 'tigger' }
-    local t3 = { 'muffin', 'xxx', 'kitty', 'beetlejuice', 'tigger', 'xxx', 'fido', 'bonzo', 'moondoggie', 'xxx' }
-
-    local l1 = List(t1, 'pink bunny')
+    local l1 = List({ 'fido', 'bonzo', 'moondoggie' }, 'pink bunny')
     pn.UT_EQUAL(l1:count(), 3)
     local s = l1:dump()
-    print(s)
-
 
     -- metatable
     pn.UT_STR_EQUAL('pink bunny', l1:name())
@@ -44,7 +38,7 @@ function M.suite_happy_path(pn)
     pn.UT_EQUAL(l1:count(), 6)
     -- { 'first', 'fido', 'bonzo', 'middle', 'moondoggie', 'end' }
 
-    l1:add_range(t2)
+    l1:add_range({ 'muffin', 'kitty', 'beetlejuice', 'tigger' })
     pn.UT_EQUAL(l1:count(), 10)
     -- { 'first', 'fido', 'bonzo', 'middle', 'moondoggie', 'end', 'muffin', 'kitty', 'beetlejuice', 'tigger' }
 
@@ -66,7 +60,7 @@ function M.suite_happy_path(pn)
     pn.UT_STR_EQUAL(l1[5], 'kitty')
 
     -- find
-    local l3 = List(t3, 'find')
+    local l3 = List({ 'muffin', 'xxx', 'kitty', 'beetlejuice', 'tigger', 'xxx', 'fido', 'bonzo', 'moondoggie', 'xxx' }, 'find')
     local ind = l3:find('zzz')
     pn.UT_NIL(ind)
     ind = l3:find('xxx')
@@ -113,7 +107,7 @@ function M.suite_happy_path(pn)
 end
 
 -----------------------------------------------------------------------------
-function M.suite_fail(pn)
+function M.suite_sad_path(pn)
 
     -- Init from table.
     local l1 = List({ 'muffin', 'kitty', 'beetlejuice', 'tigger' })
