@@ -21,7 +21,7 @@ local M = {}
 ---------------------------------------------------------------------------
 function M.suite_happy_path(pn)
 
-    local t1 = Tableex(
+    local t1 = Tableex:create(
     {
         aa="pt1",
         bb=90901,
@@ -42,19 +42,21 @@ function M.suite_happy_path(pn)
             intx=5432
         }
     },
-    'pink bunny')
+    'green bunny')
+
+    print('>>>', t1[1])
 
     local s = t1:dump()
     print(s)
-    pn.UT_EQUAL(t1:count(), 3)
+    pn.UT_EQUAL(t1:count(), 4)
 
 
     -- metatable
-    pn.UT_STR_EQUAL('pink bunny', t1:name())
+    pn.UT_STR_EQUAL('green bunny', t1:name)
     pn.UT_STR_EQUAL('string', t1:value_type())
     pn.UT_STR_EQUAL('string', t1:value_type())
     pn.UT_STR_EQUAL('Tableex', t1:class())
-    pn.UT_STR_EQUAL('Tableex:(string)[3] "pink bunny"', tostring(t1))
+    pn.UT_STR_EQUAL('Tableex:(string)[3] "green bunny"', tostring(t1))
 
     local l = t1:keys()
     pn.UT_EQUAL(l:count(), 3)
@@ -114,7 +116,7 @@ end
 function M.suite_sad_path(pn)
 
     -- Init from table.
-    local t1 = Tableex({ aa="pt1", bb=90901, alist={ "qwerty", 777, temb1={ jj="pt8", b=true, temb2={ num=1.517, dd="strdd" } }, intx=5432}}, 'pink bunny')
+    local t1 = Tableex:create({ aa="pt1", bb=90901, alist={ "qwerty", 777, temb1={ jj="pt8", b=true, temb2={ num=1.517, dd="strdd" } }, intx=5432}}, 'green bunny')
     pn.UT_EQUAL(t1:count(), 4)
 
     local ok, msg = pcall(t1.add, 123)
@@ -126,7 +128,7 @@ function M.suite_sad_path(pn)
     pn.UT_STR_CONTAINS(msg, 'Invalid integer:55')
 
     -- Init from nothing.
-    local l2 = Tableex()
+    local l2 = Tableex:create()
     pn.UT_EQUAL(l2:count(), 0)
 
     ok, msg = pcall(l2.add, l2, true)
