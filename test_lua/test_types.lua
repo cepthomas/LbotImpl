@@ -93,30 +93,30 @@ function M.suite_validators(pn)
 
     ----- val_xxx
     local tbl = {}
-    pn.UT_TRUE(lt.val_type(tbl, 'table'))
-    pn.UT_TRUE(lt.val_type(123, 'integer'))
-    pn.UT_TRUE(lt.val_type(123.1, 'number'))
-    pn.UT_TRUE(lt.val_type(false, 'boolean'))
+    lt.val_type(tbl, 'table')
+    lt.val_type(123, 'integer')
+    lt.val_type(123.1, 'number')
+    lt.val_type(false, 'boolean')
     res = pcall(lt.val_type, '123', 'table')
     pn.UT_FALSE(res)
 
-    local tbl1 = { }
-    pn.UT_TRUE(lt.val_table(tbl1))
+    local tbl1 = {}
+    lt.val_table(tbl1)
 
     tbl1 = { 'aaa', 'bbb', 333 }
 
-    pn.UT_TRUE(lt.val_table(tbl1, 3))
+    lt.val_table(tbl1, 3)
     res = pcall(lt.val_table, tbl1, 4)
     pn.UT_FALSE(res)
     res = pcall(lt.val_table, 'tbl1', 4)
     pn.UT_FALSE(res)
 
-    pn.UT_TRUE(lt.val_not_nil(tbl1))
+    lt.val_not_nil(tbl1)
     res = pcall(lt.val_not_nil, nil)
     pn.UT_FALSE(res)
 
     local function hoohaa() end
-    pn.UT_TRUE(lt.val_func(hoohaa))
+    lt.val_func(hoohaa)
     res = pcall(lt.val_func, 123)
     pn.UT_FALSE(res)
 

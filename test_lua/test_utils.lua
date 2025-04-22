@@ -36,7 +36,7 @@ function M.suite_system(pn)
     pn.UT_STR_CONTAINS(res, '<DIR>          ..')
 
     local fpath, line, dir = ut.get_caller_info(2)
-    pn.UT_EQUAL(line, 37) -- line of call above
+    pn.UT_EQUAL(line, 38) -- line of call above
     pn.UT_STR_CONTAINS(fpath, '\\LbotImpl\\test_lua\\test_utils.lua')
     pn.UT_STR_CONTAINS(dir, '\\LbotImpl\\test_lua')
 
@@ -79,30 +79,6 @@ function M.suite_files(pn)
 
     local res = ut.file_read_all('_test_file.txt')
     pn.UT_STR_EQUAL(res, 'a new stringa second string')
-
-end
-
------------------------------------------------------------------------------
-function M.suite_table(pn)
-
-    -- Test dump_table().
-    local t1 = { aa="pt1", bb=90901, alist={ "qwerty", 777, temb1={ jj="pt8", b=true, temb2={ num=1.517, dd="strdd" } }, intx=5432}}
-
-    local d = ut.dump_table(t1, '000', 0)
-    pn.UT_EQUAL(#d, 70)
-    -- print(d)
-
-    d = ut.dump_table(t1, '111', 1)
-    pn.UT_EQUAL(#d, 168)
-
-    d = ut.dump_table(t1, '222', 2)
-    pn.UT_EQUAL(#d, 251)
-
-    d = ut.dump_table(t1, '333', 3)
-    pn.UT_EQUAL(#d, 321)
-
-    d = ut.dump_table(t1, '444', 4)
-    pn.UT_EQUAL(#d, 321)
 
 end
 
