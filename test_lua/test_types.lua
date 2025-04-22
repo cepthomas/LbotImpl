@@ -100,7 +100,10 @@ function M.suite_validators(pn)
     res = pcall(lt.val_type, '123', 'table')
     pn.UT_FALSE(res)
 
-    local tbl1 = { 'aaa', 'bbb', 333 }
+    local tbl1 = { }
+    pn.UT_TRUE(lt.val_table(tbl1))
+
+    tbl1 = { 'aaa', 'bbb', 333 }
 
     pn.UT_TRUE(lt.val_table(tbl1, 3))
     res = pcall(lt.val_table, tbl1, 4)
