@@ -1,8 +1,9 @@
 
-local dev = require("dev_1")
+local dev = require("dev")
 local ut = require("lbot_utils")
+local tx = require("tableex")
 
--- print('_G:', ut.dump_table(_G, '_G'))
+-- print('_G:', tx.dump_table(_G, 1, '_G'))
 
 
 local acc = Account1
@@ -17,8 +18,8 @@ acc_bob['added'] = 1234
 
 print('20', 'acc_bob:', acc_bob)
 
--- print('25', 'acc_bob:', acc_bob, ut.dump_table(acc_bob, 'acc_bob table'))
-print('30', acc_bob:name(), acc_bob, ut.dump_table(acc_bob, acc_bob:name()))
+-- print('25', 'acc_bob:', acc_bob, tx.dump_table(acc_bob, 0, 'acc_bob table'))
+print('30', acc_bob:name(), acc_bob, tx.dump_table(acc_bob, 0, acc_bob:name()))
 
 -- print('I got:', acc_bob:getbalance())
 
