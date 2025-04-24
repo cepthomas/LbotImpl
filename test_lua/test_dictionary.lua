@@ -1,8 +1,8 @@
 -- Unit tests for Dictionary.lua.
 
-local dict = require("Dictionary")
 local tx = require("tableex")
 -- local ut = require("lbot_utils")
+local dd = require("Dictionary")
 
 local M = {}
 
@@ -19,7 +19,7 @@ local M = {}
 ---------------------------------------------------------------------------
 function M.suite_happy_path(pn)
 
-    local d1 = dict.new(
+    local d1 = dd.new(
     {
         aa=100,
         bb=200,
@@ -69,7 +69,7 @@ end
 -----------------------------------------------------------------------------
 function M.suite_sad_path(pn) -- TODOL break things
     -- -- local d1 = Dictionary:create(
-    -- local d1 = dict.new(
+    -- local d1 = dd.new(
     -- {
     --     aa="pd1",
     --     bb=90901,
