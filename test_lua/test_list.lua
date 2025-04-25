@@ -2,7 +2,7 @@
 
 local sx = require("stringex")
 local tx = require('tableex')
-local ll = require('List')
+local List = require('List')
 local dbg = require('debugger')
 
 
@@ -19,13 +19,12 @@ local M = {}
 
 
 ---------------------------------------------------------------------------
-function M.suite_happy_path(pn)
+function M.suite_success(pn)
     -- dbg()
 
     local res
 
-    -- local list1 = ll.new({'fido', 'bonzo', 'moondoggie'}, 'pink bunny')
-    local list1 = ll.new('pink bunny')
+    local list1 = List.new('pink bunny')
     list1:add_range({'fido', 'bonzo', 'moondoggie'})
 
     pn.UT_EQUAL(list1:count(), 3)
@@ -44,13 +43,13 @@ function M.suite_happy_path(pn)
     pn.UT_EQUAL(list1:count(), 5)
     list1:insert(4, 'middle')
     pn.UT_EQUAL(list1:count(), 6)
-    -- { 'first', 'fido', 'bonzo', 'middle', 'moondoggie', 'end' }
+    --> { 'first', 'fido', 'bonzo', 'middle', 'moondoggie', 'end' }
 
     list1:add_range({ 'muffin', 'kitty', 'beetlejuice', 'tigger' })
     pn.UT_EQUAL(list1:count(), 10)
-    -- { 'first', 'fido', 'bonzo', 'middle', 'moondoggie', 'end', 'muffin', 'kitty', 'beetlejuice', 'tigger' }
+    --> { 'first', 'fido', 'bonzo', 'middle', 'moondoggie', 'end', 'muffin', 'kitty', 'beetlejuice', 'tigger' }
 
-    pn.UT_EQUAL(list1:index_of('kitty'), 8) 
+    pn.UT_EQUAL(list1:index_of('kitty'), 8)
     pn.UT_EQUAL(list1:index_of('nada'), nil)
 
     pn.UT_TRUE(list1:contains('moondoggie'))
@@ -58,12 +57,12 @@ function M.suite_happy_path(pn)
 
 
     list1:sort(function(a, b) return a < b end)
-    -- 'beetlejuice', 'bonzo', 'end', 'fido', 'first', 'kitty', 'middle', 'moondoggie', 'muffin', 'tigger'
+    --> 'beetlejuice', 'bonzo', 'end', 'fido', 'first', 'kitty', 'middle', 'moondoggie', 'muffin', 'tigger'
     pn.UT_EQUAL(list1:count(), 10)
     pn.UT_STR_EQUAL(list1[5], 'first')
 
     list1:reverse()
-    -- 'tigger', 'muffin', 'moondoggie', 'middle', 'kitty', 'first', 'fido', 'end', 'bonzo', 'beetlejuice', 
+    --> 'tigger', 'muffin', 'moondoggie', 'middle', 'kitty', 'first', 'fido', 'end', 'bonzo', 'beetlejuice',
     pn.UT_EQUAL(list1:count(), 10)
     pn.UT_STR_EQUAL(list1[5], 'kitty')
 
@@ -72,12 +71,12 @@ function M.suite_happy_path(pn)
     pn.UT_STR_EQUAL(res[2], 'muffin')
 
     res = list1:get_range(5) -- rh
-    -- 'kitty', 'first', 'fido', 'end', 'bonzo', 'beetlejuice', 
+    --> 'kitty', 'first', 'fido', 'end', 'bonzo', 'beetlejuice',
     pn.UT_EQUAL(tx.table_count(res), 6)
     pn.UT_STR_EQUAL(res[3], 'fido')
 
     res = list1:get_range(3, 6) -- subset
-    -- 'moondoggie', 'middle', 'kitty', 'first', 'fido', 'end' 
+    --> 'moondoggie', 'middle', 'kitty', 'first', 'fido', 'end'
     pn.UT_EQUAL(tx.table_count(res), 6)
     pn.UT_STR_EQUAL(res[4], 'first')
 
@@ -94,7 +93,7 @@ function M.suite_happy_path(pn)
     pn.UT_EQUAL(list1:count(), 0)
 
     -- find
-    local list2 = ll.new('find')
+    local list2 = List.new('find')
     list2:add_range({ 'muffin', 'xxx', 'kitty', 'beetlejuice', 'tigger', 'xxx', 'fido', 'bonzo', 'moondoggie', 'xxx' })
     local ind = list2:find('zzz')
     pn.UT_NIL(ind)
@@ -114,10 +113,10 @@ function M.suite_happy_path(pn)
 end
 
 -----------------------------------------------------------------------------
-function M.suite_sad_path(pn)
+function M.suite_fail(pn) --TODOL
 
     -- -- Init from table.
-    -- local list1 = ll.new({ 'muffin', 'kitty', 'beetlejuice', 'tigger' }, 'purple dragon')
+    -- local list1 = List.new({ 'muffin', 'kitty', 'beetlejuice', 'tigger' }, 'purple dragon')
     -- list1.count()
     -- pn.UT_EQUAL(list1:count(), 4)
 

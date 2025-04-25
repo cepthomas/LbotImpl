@@ -2,7 +2,7 @@
 
 local tx = require("tableex")
 -- local ut = require("lbot_utils")
-local dd = require("Dictionary")
+local Dictionary = require("Dictionary")
 
 local M = {}
 
@@ -17,17 +17,10 @@ local M = {}
 
 
 ---------------------------------------------------------------------------
-function M.suite_happy_path(pn)
+function M.suite_success(pn)
 
-    local d1 = dd.new(
-    {
-        aa=100,
-        bb=200,
-        cc=300,
-        dd=400,
-        ee=500
-    },
-    'green dragon')
+    local d1 = Dictionary.new('green dragon')
+    d1:add_range({ aa=100, bb=200, cc=300, dd=400, ee=500 })
 
     pn.UT_EQUAL(d1:count(), 5)
 
@@ -67,8 +60,8 @@ function M.suite_happy_path(pn)
 end
 
 -----------------------------------------------------------------------------
-function M.suite_sad_path(pn) -- TODOL break things
-    -- -- local d1 = Dictionary:create(
+function M.suite_fail(pn) -- TODOL break things
+    -- -- local Dictionary = Dictionary:create(
     -- local d1 = dd.new(
     -- {
     --     aa="pd1",
