@@ -67,15 +67,25 @@ function M.suite_basic(pn)
     stat = pn.UT_NIL(nil)
     pn.UT_TRUE(stat, PASS_STR)
 
+    -- UT_RAISES
+    local function func_that_throws(sum, a1, a2, a3)
+        if a1 + a2 + a3 ~= sum then error(FAIL_STR) end
+    end
+
+    func_that_throws(6, 1, 2, 3)
+    pn.UT_RAISES(func_that_throws, {66, 1, 2, 3}, FAIL_STR)
+    pn.UT_RAISES(func_that_throws, {6, 1, 2, 3}, 'BOOM')
+
+
     -- Check summary. Cache values first.
-    num_suites_run = pn.num_suites_run
-    num_suites_failed = pn.num_suites_failed
-    num_cases_run = pn.num_cases_run
-    num_cases_failed = pn.num_cases_failed
+    local num_suites_run = pn.num_suites_run
+    local num_suites_failed = pn.num_suites_failed
+    local num_cases_run = pn.num_cases_run
+    local num_cases_failed = pn.num_cases_failed
     pn.UT_EQUAL(num_suites_run, 1)
     pn.UT_EQUAL(num_suites_failed, 1, "Info 6.")
-    pn.UT_EQUAL(num_cases_run, 33)
-    pn.UT_EQUAL(num_cases_failed, 15)
+    pn.UT_EQUAL(num_cases_run, 35)
+    pn.UT_EQUAL(num_cases_failed, 16)
 
 end
 

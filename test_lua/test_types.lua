@@ -1,6 +1,7 @@
 -- Unit tests for lbot_types.lua.
 
 local lt = require("lbot_types")
+local tx = require("tableex")
 
 
 local M = {}
@@ -53,72 +54,55 @@ function M.suite_validators(pn)
 
     local res
 
-    ----- val_number
-    res = pcall(lt.val_number, 13.4, 13.3, 13.5)
-    pn.UT_TRUE(res)
-
-    res = pcall(lt.val_number, 13.4)
-    pn.UT_TRUE(res)
-
+    ----- number
+    lt.val_number(13.4, 13.3, 13.5)
+    lt.val_number(13.4)
     -- Wrong type
-    res = pcall(lt.val_number, '13.4', 13.3, 13.5)
-    pn.UT_FALSE(res)
-
+    pn.UT_RAISES(lt.val_number, {'13.4', 13.3, 13.5}, 'Invalid number:13.4')
     -- Below
-    res = pcall(lt.val_number, 13.2, 13.3, 13.5)
-    pn.UT_FALSE(res)
-
+    pn.UT_RAISES(lt.val_number, {13.2, 13.3, 13.5}, 'Invalid number:13.2')
     -- Above
-    res = pcall(lt.val_number, 13.6, 13.9, 13.5)
-    pn.UT_FALSE(res)
+    pn.UT_RAISES(lt.val_number, {13.6, 13.9, 13.5}, 'Invalid number:13.6')
 
-    ----- val_integer
-    res = pcall(lt.val_integer, 271, 270, 272)
-    pn.UT_TRUE(res)
-
-    res = pcall(lt.val_integer, 271)
-    pn.UT_TRUE(res)
-
+    ----- integer
+    lt.val_integer(271, 270, 272)
+    lt.val_integer(271)
     -- Wrong type
-    res = pcall(lt.val_integer, 13.4, 13.3, 13.5)
-    pn.UT_FALSE(res)
-
+    pn.UT_RAISES(lt.val_integer, {13.4, 13.3, 13.5}, 'Invalid integer:13.4')
     -- Below
-    res = pcall(lt.val_integer, 269, 270, 272)
-    pn.UT_FALSE(res)
-
+    pn.UT_RAISES(lt.val_integer, {269, 270, 272}, 'Invalid integer:269')
     -- Above
-    res = pcall(lt.val_integer, 273, 270, 272)
-    pn.UT_FALSE(res)
+    pn.UT_RAISES(lt.val_integer, {273, 270, 272}, 'Invalid integer:273')
 
-    ----- val_xxx
+    ----- table
     local tbl = {}
+    lt.val_table(tbl)
+    tbl = { 'aaa', 'bbb', 333 }
+    lt.val_table(tbl, 3)
+    -- pn.UT_RAISES(lt.val_table, {tbl, 4}, 'Sparse table: 4')
+    pn.UT_RAISES(lt.val_table, {'tbl', 4}, 'Not a valid table')
+
+    tbl = { 'aaa', bad='bbb', 333 }
+    pn.UT_RAISES(lt.val_array, {tbl}, 'Not array type')
+    tbl = {'one', 'two', 'three', 'four'}
+    lt.val_array(tbl)
+    tbl = {[2]='one', [9]='two', [5]='three', [1]='four'}
+    pn.UT_RAISES(lt.val_array, {tbl}, 'Not array type')
+
+    ----- misc
     lt.val_type(tbl, 'table')
     lt.val_type(123, 'integer')
     lt.val_type(123.1, 'number')
     lt.val_type(false, 'boolean')
-    res = pcall(lt.val_type, '123', 'table')
-    pn.UT_FALSE(res)
+    pn.UT_RAISES(lt.val_type, {'123', 'table'}, 'Invalid type:string')
 
-    local tbl1 = {}
-    lt.val_table(tbl1)
-
-    tbl1 = { 'aaa', 'bbb', 333 }
-
-    lt.val_table(tbl1, 3)
-    res = pcall(lt.val_table, tbl1, 4)
-    pn.UT_FALSE(res)
-    res = pcall(lt.val_table, 'tbl1', 4)
-    pn.UT_FALSE(res)
-
-    lt.val_not_nil(tbl1)
-    res = pcall(lt.val_not_nil, nil)
-    pn.UT_FALSE(res)
+    lt.val_not_nil(tbl)
+    local vnil = nil
+    pn.UT_RAISES(lt.val_not_nil, {vnil}, 'Value is nil')
 
     local function hoohaa() end
     lt.val_func(hoohaa)
-    res = pcall(lt.val_func, 123)
-    pn.UT_FALSE(res)
+    pn.UT_RAISES(lt.val_func, {123}, 'Invalid function')
 
 end
 

@@ -29,12 +29,11 @@ function M.suite_success(pn)
 
     pn.UT_EQUAL(list1:count(), 3)
     local s = list1:dump()
-
-    -- metatable
-    pn.UT_STR_EQUAL('pink bunny', list1:name())
-    pn.UT_STR_EQUAL('string', list1:value_type())
-    pn.UT_STR_EQUAL('List', list1:class())
-    pn.UT_STR_EQUAL('pink bunny(List)[string]', tostring(list1))
+    pn.UT_STR_EQUAL(s, 'fido,bonzo,moondoggie')
+    pn.UT_STR_EQUAL(list1:name(), 'pink bunny')
+    pn.UT_STR_EQUAL(list1:value_type(), 'string')
+    pn.UT_STR_EQUAL(list1:class(), 'List')
+    pn.UT_STR_EQUAL(tostring(list1), 'pink bunny(List)[string]')
 
     list1:add('end')
     pn.UT_EQUAL(list1:count(), 4)
@@ -113,7 +112,7 @@ function M.suite_success(pn)
 end
 
 -----------------------------------------------------------------------------
-function M.suite_fail(pn) --TODOL
+function M.suite_fail(pn) --TODOL  UT_RAISES
 
     -- -- Init from table.
     -- local list1 = List.new({ 'muffin', 'kitty', 'beetlejuice', 'tigger' }, 'purple dragon')

@@ -17,7 +17,7 @@ local M = {}
 
 
 -----------------------------------------------------------------------------
-function M.suite_happy_path(pn)
+function M.suite_success(pn)
 
     -- Test dump_table()
     local tt =
@@ -99,7 +99,7 @@ function M.suite_happy_path(pn)
 end
 
 -----------------------------------------------------------------------------
-function M.suite_sad_path(pn) -- TODOL
+function M.suite_fail(pn) -- TODOL UT_RAISES
 
     -- -- Init from table.
     -- local t1 = Tableex:create({ aa="pt1", bb=90901, alist={ "qwerty", 777, temb1={ jj="pt8", b=true, temb2={ num=1.517, dd="strdd" } }, intx=5432}}, 'green bunny')
