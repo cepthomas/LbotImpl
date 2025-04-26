@@ -17,7 +17,6 @@ local M = {}
 -- end
 
 
-
 ---------------------------------------------------------------------------
 function M.suite_success(pn)
     -- dbg()
@@ -119,25 +118,48 @@ function M.suite_fail(pn) --TODOL  UT_RAISES
     -- list1.count()
     -- pn.UT_EQUAL(list1:count(), 4)
 
-    -- local ok, msg = pcall(list1.add, 123)
-    -- pn.UT_FALSE(ok)
-    -- pn.UT_STR_CONTAINS(msg, 'Values not homogenous')
+-- local function _check_val(val)
+-- local check_vtype = ut.ternary(lt.is_integer(val), 'integer', type(val))
+-- error('Invalid value type: '..check_vtype)
+-- if check_vtype ~= _value_type then error('Values not homogenous: '..check_vtype..' should be '.._value_type) end
 
-    -- ok, msg = pcall(list1.remove_at, list1, 55)
-    -- pn.UT_FALSE(ok)
-    -- pn.UT_STR_CONTAINS(msg, 'Invalid integer:55')
+-- function list:add(val)
+-- _check_val(val)
 
-    -- -- Init from nothing.
-    -- local list = List()
-    -- pn.UT_EQUAL(list:count(), 0)
+-- function list:add_range(other)
+-- lt.val_table(other, 1)
+-- _check_val(val)
 
-    -- ok, msg = pcall(list.add, list, true)
-    -- pn.UT_TRUE(ok)
-    -- pn.UT_EQUAL(list:count(), 1)
+-- function list:insert(i, val)
+-- lt.val_integer(i, 1, #_data)
+-- _check_val(val)
 
-    -- ok, msg = pcall(list.add, list, {})
-    -- pn.UT_FALSE(ok)
-    -- pn.UT_STR_CONTAINS(msg, 'Values not homogenous')
+-- function list:remove_at(i)
+-- lt.val_integer(i, 1, #_data)
+
+-- function list:remove(val)
+-- lt.val_not_nil(val)
+
+-- function list:index_of(val, i)
+-- lt.val_not_nil(val)
+
+-- function list:contains(val)
+-- lt.val_not_nil(val)
+
+-- function list:sort(cmp)
+-- lt.val_func(cmp)
+
+-- function list:find(val, start)
+-- lt.val_type(val, _value_type)
+-- start = start or 1
+-- lt.val_integer(start)
+
+-- function list:find_all(func)
+-- lt.val_func(func)
+
+-- __newindex = function(t, index, value)
+--  _check_val(value)
+
 
 end
 

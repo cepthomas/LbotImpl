@@ -61,7 +61,6 @@ end
 
 -----------------------------------------------------------------------------
 function M.suite_fail(pn) -- TODOL break things  UT_RAISES
-    -- -- local Dictionary = Dictionary:create(
     -- local d1 = dd.new(
     -- {
     --     aa="pd1",
@@ -91,51 +90,23 @@ function M.suite_fail(pn) -- TODOL break things  UT_RAISES
     -- pn.UT_EQUAL(l:count(), 4)
     -- -- printex('values', l)
 
+-- _check_kv:
+-- error('Invalid key type: '..check_ktype)
+-- error('Invalid value type: '..check_vtype)
+-- if check_ktype ~= _key_type then error('Keys not homogenous: '..check_ktype..' should be '.._key_type) end
+-- if check_vtype ~= _value_type then error('Values not homogenous: '..check_vtype..' should be '.._val_type) end
 
+-- function dict:add_range(other)
+-- lt.val_table(other, 1)
 
-    -- local t2 =
-    -- {
-    --     color='blue',
-    --     to_add={name='bazoo', count=55},
-    -- }
+-- function dict:add_range(other)
+-- lt.val_table(other, 1)
+-- _check_kv(k, v)
 
-    -- d1:add_range(t2)
-    -- pn.UT_EQUAL(d1:count(), 7)
-
-    -- -- printex(d1:contains_value('bb'))
-
-    -- -- pn.UT_EQUAL(d1:contains_value('bb'), 90901)
-    -- -- pn.UT_EQUAL(d1:contains_value('color'), 'blue')
-    -- pn.UT_EQUAL(d1:contains_value(90901), 'bb')
-    -- pn.UT_EQUAL(d1:contains_value('blue'), 'color')
-    -- pn.UT_NIL(d1:contains_value('nada'))
-
-    -- -- Init from table.
-    -- local t1 = Tableex:create({ aa="pt1", bb=90901, alist={ "qwerty", 777, temb1={ jj="pt8", b=true, temb2={ num=1.517, dd="strdd" } }, intx=5432}}, 'green bunny')
-    -- pn.UT_EQUAL(t1:count(), 4)
-
-    -- local ok, msg = pcall(t1.add, 123)
-    -- pn.UT_FALSE(ok)
-    -- pn.UT_STR_CONTAINS(msg, 'Values not homogenous')
-
-    -- ok, msg = pcall(t1.remove_at, t1, 55)
-    -- pn.UT_FALSE(ok)
-    -- pn.UT_STR_CONTAINS(msg, 'Invalid integer:55')
-
-    -- -- Init from nothing.
-    -- local l2 = Tableex:create()
-    -- pn.UT_EQUAL(l2:count(), 0)
-
-    -- ok, msg = pcall(l2.add, l2, true)
-    -- pn.UT_TRUE(ok)
-    -- pn.UT_EQUAL(l2:count(), 1)
-
-    -- ok, msg = pcall(l2.add, l2, {})
-    -- pn.UT_FALSE(ok)
-    -- pn.UT_STR_CONTAINS(msg, 'Values not homogenous')
+-- __newindex = function(t, index, value)
+-- _check_kv(index, value)
 
 end
-
 
 -----------------------------------------------------------------------------
 -- Return the module.
