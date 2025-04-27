@@ -49,7 +49,7 @@ public:
 
 
 //----------------------------------------------------//
-public ref class Interop : InteropCore::Core
+public ref class Interop : InteropCore
 {
 
 //============= C# => C functions .h =============//

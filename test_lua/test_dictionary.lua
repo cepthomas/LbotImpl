@@ -60,51 +60,24 @@ function M.suite_success(pn)
 end
 
 -----------------------------------------------------------------------------
-function M.suite_fail(pn) -- TODOL break things  UT_RAISES
-    -- local d1 = dd.new(
-    -- {
-    --     aa="pd1",
-    --     bb=90901,
-    --     temb1=
-    --     {
-    --         jj="pt8",
-    --         b=true,
-    --     },
-    --     xyz= function() end,
-    --     777,
-    -- },
-    -- 'green bunny')
+function M.suite_fail(pn)
 
-    -- -- metatable
-    -- pn.UT_STR_EQUAL('green bunny', d1:name())
-    -- pn.UT_STR_EQUAL('nil', d1:key_type())
-    -- pn.UT_STR_EQUAL('nil', d1:value_type())
-    -- pn.UT_STR_EQUAL('Dictionary', d1:class())
-    -- pn.UT_STR_EQUAL('green bunny(Dictionary)[nil:nil]', tostring(d1))
+    local co = coroutine.create(function () end)
 
-    -- local l = d1:keys()
-    -- pn.UT_EQUAL(l:count(), 4)
-    -- -- printex('keys', l)
+    local d1 = Dictionary.new()
+    pn.UT_RAISES(d1.add_range, { self, { aa=100, bb=200, [true]=300, dd=400, ee=500 }}, 'Invalid key type: boolean')
 
-    -- l = d1:values()
-    -- pn.UT_EQUAL(l:count(), 4)
-    -- -- printex('values', l)
+    d1 = Dictionary.new()
+    pn.UT_RAISES(d1.add_range, { self, { aa=100, bb=200, cc=300, dd=co, ee=500 }}, 'Invalid value type: thread')
 
--- _check_kv:
--- error('Invalid key type: '..check_ktype)
--- error('Invalid value type: '..check_vtype)
--- if check_ktype ~= _key_type then error('Keys not homogenous: '..check_ktype..' should be '.._key_type) end
--- if check_vtype ~= _value_type then error('Values not homogenous: '..check_vtype..' should be '.._val_type) end
+    -- TODOL use UT_RAISES()
+    d1 = Dictionary.new()
+    d1:add_range({ aa=100, bb=200, cc=300, dd=400, ee=500 })
+    -- d1[co] = 123 --> 'Invalid key type: thread'  
 
--- function dict:add_range(other)
--- lt.val_table(other, 1)
-
--- function dict:add_range(other)
--- lt.val_table(other, 1)
--- _check_kv(k, v)
-
--- __newindex = function(t, index, value)
--- _check_kv(index, value)
+    d1 = Dictionary.new()
+    d1:add_range({ aa=100, bb=200, cc=300, dd=400, ee=500 })
+    -- d1.dd = nil --> 'Invalid value type: nil'
 
 end
 

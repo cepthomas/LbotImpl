@@ -7,7 +7,6 @@ using System.Threading;
 using System.Diagnostics;
 using Ephemera.NBagOfTricks;
 using Ephemera.NBagOfTricks.Slog;
-using InteropCore;
 
 
 // Entry.

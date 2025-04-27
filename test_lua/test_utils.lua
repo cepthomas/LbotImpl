@@ -73,12 +73,12 @@ end
 -----------------------------------------------------------------------------
 function M.suite_files(pn)
 
-    ut.file_write_all('_test_file.txt', 'a new string')
-
-    ut.file_append_all('_test_file.txt', 'a second string')
-
-    local res = ut.file_read_all('_test_file.txt')
+    local temp_fn = '_test_file.txt'
+    ut.file_write_all(temp_fn, 'a new string')
+    ut.file_append_all(temp_fn, 'a second string')
+    local res = ut.file_read_all(temp_fn)
     pn.UT_STR_EQUAL(res, 'a new stringa second string')
+    os.remove(temp_fn)
 
 end
 

@@ -111,55 +111,20 @@ function M.suite_success(pn)
 end
 
 -----------------------------------------------------------------------------
-function M.suite_fail(pn) --TODOL  UT_RAISES
+function M.suite_fail(pn)
 
-    -- -- Init from table.
-    -- local list1 = List.new({ 'muffin', 'kitty', 'beetlejuice', 'tigger' }, 'purple dragon')
-    -- list1.count()
-    -- pn.UT_EQUAL(list1:count(), 4)
+    local co = coroutine.create(function () end)
 
--- local function _check_val(val)
--- local check_vtype = ut.ternary(lt.is_integer(val), 'integer', type(val))
--- error('Invalid value type: '..check_vtype)
--- if check_vtype ~= _value_type then error('Values not homogenous: '..check_vtype..' should be '.._value_type) end
+    local list3 = List.new()
+    pn.UT_RAISES(list3.add_range, { self, { 'muffin', 'kitty', 9, 'beetlejuice', 'tigger' }}, 'Invalid value type: integer')
 
--- function list:add(val)
--- _check_val(val)
+    list3 = List.new()
+    list3:add_range({ 'muffin', 'kitty', 'beetlejuice', 'tigger' })
+    pn.UT_RAISES(list3.add, { self, true }, 'Invalid value type: boolean')
 
--- function list:add_range(other)
--- lt.val_table(other, 1)
--- _check_val(val)
-
--- function list:insert(i, val)
--- lt.val_integer(i, 1, #_data)
--- _check_val(val)
-
--- function list:remove_at(i)
--- lt.val_integer(i, 1, #_data)
-
--- function list:remove(val)
--- lt.val_not_nil(val)
-
--- function list:index_of(val, i)
--- lt.val_not_nil(val)
-
--- function list:contains(val)
--- lt.val_not_nil(val)
-
--- function list:sort(cmp)
--- lt.val_func(cmp)
-
--- function list:find(val, start)
--- lt.val_type(val, _value_type)
--- start = start or 1
--- lt.val_integer(start)
-
--- function list:find_all(func)
--- lt.val_func(func)
-
--- __newindex = function(t, index, value)
---  _check_val(value)
-
+    list3 = List.new()
+    list3:add_range({ 'muffin', 'kitty', 'beetlejuice', 'tigger' })
+    pn.UT_RAISES(list3.insert, { self, 3, co }, 'Invalid value type: thread')
 
 end
 
