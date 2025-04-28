@@ -80,7 +80,7 @@ function M.suite_success(pn)
     -- TODOL fails, makes shallow copy.
     -- pn.UT_EQUAL(#s, 392)
 
-    -- array-like tables
+    -- sequence-like tables
     local tl = {'aaa', 'bbb', 'ccc', 'ddd', 'eee'}
     s = tx.dump_list(tl)
     pn.UT_EQUAL(s, 'aaa,bbb,ccc,ddd,eee')

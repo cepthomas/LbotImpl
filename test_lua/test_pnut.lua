@@ -74,7 +74,7 @@ function M.suite_basic(pn)
 
     func_that_throws(6, 1, 2, 3)
     pn.UT_RAISES(func_that_throws, {66, 1, 2, 3}, FAIL_STR)
-    pn.UT_RAISES(func_that_throws, {6, 1, 2, 3}, 'BOOM')
+    pn.UT_RAISES(func_that_throws, {6, 1, 2, 3}, 'BOOM!')
 
 
     -- Check summary. Cache values first.

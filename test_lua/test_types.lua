@@ -83,11 +83,11 @@ function M.suite_validators(pn)
     pn.UT_RAISES(lt.val_table, {'tbl', 4}, 'Not a valid table')
 
     tbl = { 'aaa', bad='bbb', 333 }
-    pn.UT_RAISES(lt.val_array, {tbl}, 'Not array type')
+    pn.UT_RAISES(lt.val_sequence, {tbl}, 'Not sequence type')
     tbl = {'one', 'two', 'three', 'four'}
-    lt.val_array(tbl)
+    lt.val_sequence(tbl)
     tbl = {[2]='one', [9]='two', [5]='three', [1]='four'}
-    pn.UT_RAISES(lt.val_array, {tbl}, 'Not array type')
+    pn.UT_RAISES(lt.val_sequence, {tbl}, 'Not sequence type')
 
     ----- misc
     lt.val_type(tbl, 'table')
