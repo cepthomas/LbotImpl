@@ -148,3 +148,20 @@ setup()
 
 dbg.pdebug(boom, 'green')
 -- run_debug(boom, 'green')
+
+
+-- '<return> re-run last command',
+-- 'c(ontinue) continue execution',
+-- 's(tep) step forward by one line (into functions)',
+-- 'n(ext) step forward by one line (skipping over functions)',
+-- 'f(inish) step forward until exiting the current function',
+-- 'u(p) move up the stack by one frame',
+-- 'd(own) move down the stack by one frame',
+-- 'i(nspect) [index] move to a specific stack frame',
+-- 'w(here) [line count] print source code around the current line',
+-- 'e(val) [statement] execute the statement',
+-- 'p(rint) [expression] execute the expression and print the result',
+-- 't(race) print the stack trace',
+-- 'l(ocals) print the function arguments, locals and upvalues.',
+-- 'h(elp) print this message',
+-- 'q(uit) halt execution'
