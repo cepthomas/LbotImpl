@@ -12,20 +12,6 @@ local dbg = require("debugex")
 local counter = 100
 
 
---- Replacement for print(...) with file and line added. from lbot TODOD
-function printex(...)
-    local res = {}
-    local arg = {...}
-    local fpath = debug.getinfo(2, 'S').short_src
-    local line = debug.getinfo(2, 'l').currentline
-    table.insert(res, fpath..'('..line..')')
-    for _, v in ipairs(arg) do
-        table.insert(res, '['..tostring(v)..']')
-    end
-
-    print(sx.strjoin(' ', res))
-end
-
 
 -----------------------------------------------------------------------------
 local function log_error(msg) printex('ERR', msg) end
@@ -140,7 +126,8 @@ local function run_debug(f, ...)
             -- Save the trace.
             _trace = debug.traceback()
             -- Start debugger.
-            dbg(false, 1, "msgh")
+            dbg.run(false, 1, "msgh")
+            -- dbg(false, 1, "msgh")
             return ...
         end,
         ...)
@@ -159,5 +146,5 @@ end
 
 setup()
 
-
-run_debug(boom, 'green')
+dbg.pdebug(boom, 'green')
+-- run_debug(boom, 'green')
