@@ -62,92 +62,68 @@ local function boom(some_arg)
 end
 
 
-local _trace = nil
+-- -- Works like pcall(), but invokes the debugger on an error.
+-- local function run_debug_X(f, ...)
+--     -- local arg = {...}
+--     -- print('>>>0', tx.dump_table(arg))
+--     -- print(debug.traceback())
 
--- Error message handler that can be used with lua_pcall().
-local msgh_X = function(...)
-    print('### err:', ...)
-    print('### msgh traceback', debug.traceback())
-    -- Save the trace.
-    _trace = debug.traceback()
+--     -- local ok, msg = pcall(f, ...)
+--     -- print('!!!', ok, msg)
 
+--     local ok, msg = xpcall(f, msgh_X, ...)
 
-    -- Start debugger.
-    dbg(false, 1, "msgh")
+-- -- after c(ontinue):
 
-    return ...
-end
+--     local tr = sx.strsplit(_trace, '\n')
+--     table.remove(tr, 1)
 
--- Works like pcall(), but invokes the debugger on an error.
-local function run_debug_X(f, ...)
-    -- local arg = {...}
-    -- print('>>>0', tx.dump_table(arg))
-    -- print(debug.traceback())
-
-    -- local ok, msg = pcall(f, ...)
-    -- print('!!!', ok, msg)
-
-    local ok, msg = xpcall(f, msgh_X, ...)
-
--- after c(ontinue):
-
-    local tr = sx.strsplit(_trace, '\n')
-    table.remove(tr, 1)
-
-    print('!!! run_debug', ok, msg, f)
-    print('!!! ', tx.dump_table(tr, 'run_debug'))
-
--- !!! run_debug   false   test_debugex.lua:65: attempt to concatenate a nil value function: 0000000000f01840
--- !!!     run_debug[T]
---     1[N]:test_debugex.lua:93: in metamethod 'concat'[S]
---     2[N]:test_debugex.lua:65: in upvalue 'nest2'[S]
---     3[N]:test_debugex.lua:70: in upvalue 'nest1'[S]
---     4[N]:test_debugex.lua:75: in function <test_debugex.lua:73>[S]
---     5[N]:[C]: in function 'xpcall'[S]
---     6[N]:test_debugex.lua:111: in local 'run_debug'[S]
---     7[N]:test_debugex.lua:132: in main chunk[S]
---     8[N]:[C]: in ?[S]
-
-end
+--     print('!!! run_debug', ok, msg, f)
+--     print('!!! ', tx.dump_table(tr, 'run_debug'))
+-- end
 
 
 -- dbg(condition, top_offset, source)
 -- dbg(false, level, 'dbg.error()')
 
 
--- Works like pcall(), but invokes the debugger on an error.
-local function run_debug(f, ...)
+-- -- Works like pcall(), but invokes the debugger on an error.
+-- local function run_debug(f, ...)
 
-    -- msg like: test_debugex.lua:68: attempt to concatenate a nil value
-    local ok, msg = xpcall(f,
-        function(...)
-            -- print('### err:', ...)
-            -- print('### msgh traceback', debug.traceback())
-            -- Save the trace.
-            _trace = debug.traceback()
-            -- Start debugger.
-            dbg.run(false, 1, "msgh")
-            -- dbg(false, 1, "msgh")
-            return ...
-        end,
-        ...)
+--     -- msg like: test_debugex.lua:68: attempt to concatenate a nil value
+--     local ok, msg = xpcall(f,
+--         function(...)
+--             -- print('### err:', ...)
+--             -- print('### msgh traceback', debug.traceback())
+--             -- Save the trace.
+--             _trace = debug.traceback()
+--             -- Start debugger.
+--             dbg.run(false, 1, "msgh")
+--             -- dbg(false, 1, "msgh")
+--             return ...
+--         end,
+--         ...)
 
-    if not ok then
-        local tr = sx.strsplit(_trace, '\n')
-        table.remove(tr, 1)
+--     if not ok then
+--         local tr = sx.strsplit(_trace, '\n')
+--         table.remove(tr, 1)
 
-        print('!!! run_debug', ok, msg, f)
-        print('!!! ', tx.dump_table(tr, 'run_debug'))
-    end
+--         print('!!! run_debug', ok, msg, f)
+--         print('!!! ', tx.dump_table(tr, 'run_debug'))
+--     end
+-- end
 
-end
+
 -----------------------------------------------------------------------------
 -- fake script here:
 
 setup()
 
-dbg.pdebug(boom, 'green')
--- run_debug(boom, 'green')
+local ok, msg = dbg.pdebug(boom, 'green')
+if not ok then
+    print('*** err:', msg)
+end
+
 
 
 -- '<return> re-run last command',
