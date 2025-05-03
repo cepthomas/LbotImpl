@@ -5,6 +5,7 @@ local sx = require("stringex")
 local tx = require('tableex')
 
 local dbg = require("debugex")
+-- local dbg = require("debugger")
 
 -- Reference/original app. Needs env TERM=1.
 -- local dbg = require("debugger")
