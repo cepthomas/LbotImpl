@@ -4,11 +4,14 @@ local lt = require("lbot_types")
 local sx = require("stringex")
 local tx = require('tableex')
 
-local dbg = require("debugex")
--- local dbg = require("debugger")
 
 -- Reference/original app. Needs env TERM=1.
+-- local dbg = require("debugger_orig_hack")
 -- local dbg = require("debugger")
+
+-- local dbg = require("debugger_hack")
+
+local dbg = require("debugex")
 
 local counter = 100
 
@@ -37,9 +40,10 @@ end
 -- @param arg optional argument int
 -- @return result string (table would be nice later)
 local function do_command(cmd, arg)
--- dbg()
     log_info('Got this command: '..cmd..'('..arg..')')
     local ret = 'counter => '..counter
+    -- dbg.bp()
+    dbg()
     counter = counter + 1
     return ret
 end
@@ -49,7 +53,7 @@ end
 -----------------------------------------------------------------------------
 local function nest2(some_arg)
     log_info('nest2() was called: '..some_arg)
-    return 'boom'..nil
+    -- return 'boom'..nil
 end
 
 local function nest1(some_arg)
@@ -58,6 +62,7 @@ local function nest1(some_arg)
 end
 
 local function boom(some_arg)
+    dbg()
     log_info('boom() was called: '..some_arg)
     nest1(some_arg..'0')
 end
@@ -120,10 +125,14 @@ end
 
 setup()
 
-local ok, msg = dbg.pdebug(boom, 'green')
-if not ok then
-    print('*** err:', msg)
-end
+
+boom("orange")
+
+-- local ok, msg = dbg.call(boom, 'green')
+-- local ok, msg = dbg()
+-- if not ok then
+--     print('*** err:', msg)
+-- end
 
 
 
