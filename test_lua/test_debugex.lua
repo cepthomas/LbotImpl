@@ -1,38 +1,37 @@
 
--- local ut = require("lbot_utils")
--- local lt = require("lbot_types")
--- local sx = require("stringex")
--- local tx = require('tableex')
-
-
 local dbg = require("debugex")
+local other = require("other")
 
-local counter = 100
 
-
+-- Set configs here.
+dbg.pretty_depth = 4
+dbg.auto_where = 4
+dbg.ansi_color = true
+dbg.trace = false
 
 dbg.print('Loading test_debugex.lua')
 
+-- Vars.
+local counter = 100
 
 -----------------------------------------------------------------------------
 local function do_command(cmd, arg)
     dbg.print('Got this command: '..cmd..'('..arg..')')
-    local ret = 'counter => '..counter
-    -- dbg()
-    -- dbg.bp()
     counter = counter + 1
+    local ret = 'counter => '..counter
+    --dbg()
     return ret
 end
 
 
 -----------------------------------------------------------------------------
-local function nest2(some_arg)
-    dbg.print('nest2() was called: '..some_arg)
+local function nest_2(some_arg)
+    dbg.print('nest_2() was called: '..some_arg)
     return 'boom'..nil
 end
 
 -----------------------------------------------------------------------------
-local function nest1(some_arg)
+local function nest_1(some_arg)
     local my_table =
     {
         aa="str-pt1",
@@ -59,16 +58,18 @@ local function nest1(some_arg)
         [101]='booga'
     }
 
-    dbg.print('nest1() was called: '..some_arg)
+    dbg.print('nest_1() was called: '..some_arg)
     dbg()
-    nest2(some_arg..'1')
+    nest_2(some_arg..'_1')
 end
 
 -----------------------------------------------------------------------------
-local function boom(some_arg)
-    dbg.print('boom() was called: '..some_arg)
-    -- dbg.bp()
-    nest1(some_arg..'0')
+local function lmain(some_arg)
+    dbg.print('lmain() was called: '..some_arg)
+    dbg()
+    local sum = other.add(10, 33)
+    dbg.print('other said '..sum)
+    nest_1(some_arg..'_0')
 end
 
 --------------- Start here --------------------------------------------------
@@ -78,10 +79,5 @@ local ok, msg = do_command('touch', 'nose')
 dbg.print(string.format('do_command(): %q %s', ok, msg))
 
 -- Function that error().
-ok, msg = dbg.pcall(boom, 'green')
-dbg.print(string.format('boom(green): %q %s', ok, msg))
-
--- local ok, msg = dbg.pcall(boom, 'green')
--- if not ok then
---     dbg.print('*** err:', msg)
--- end
+ok, msg = dbg.pcall(lmain, 'green')
+dbg.print(string.format('lmain(green): %q %s', ok, msg))
