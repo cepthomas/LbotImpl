@@ -54,7 +54,7 @@ local function nest_1(some_arg)
             intx=5432,
             nada=nil
         },
-        cc=function() end,
+        cc=function() end, 
         [101]='booga'
     }
 
@@ -75,9 +75,9 @@ end
 --------------- Start here --------------------------------------------------
 
 -- Plain function.
-local ok, msg = do_command('touch', 'nose')
-dbg.print(string.format('do_command(): %q %s', ok, msg))
+local res, msg = do_command('touch', 'nose')
+dbg.print(string.format('do_command(): %q %s', res, msg))
 
--- Function that error().
-ok, msg = dbg.pcall(lmain, 'green')
-dbg.print(string.format('lmain(green): %q %s', ok, msg))
+-- Function that errors.
+res, msg = dbg.pcall(lmain, 'green')
+dbg.print(string.format('lmain(green): %q %s', res, msg))
