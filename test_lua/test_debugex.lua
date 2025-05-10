@@ -8,6 +8,7 @@ dbg.pretty_depth = 4
 dbg.auto_where = 4
 dbg.ansi_color = true
 dbg.trace = false
+dbg.port = 59120
 
 dbg.print('Loading test_debugex.lua')
 
